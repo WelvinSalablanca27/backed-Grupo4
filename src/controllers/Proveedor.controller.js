@@ -1,7 +1,7 @@
 import { pool } from '../../db_connection.js';
 
 // Obtener todas las Proveedor
-export const obtenerEmpleados = async (req, res) => {
+export const obtenerProveedores = async (req, res) => {
   try {
     const [result] = await pool.query('SELECT * FROM Proveedor');
     res.json(result);

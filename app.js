@@ -8,7 +8,7 @@ import rutasDetallesCompra from './src/routes/DetalleCompra.routes.js';
 import rutasDetallesVentas from './src/routes/Detalles_venta.routes.js';
 import rutasProductos from './src/routes/Producto.routes.js';
 import rutasProveedor from './src/routes/Proveedor.routes.js';
-import rutasVenta from './src/routes/ventas.routes.js';
+import rutasVenta from './src/routes/Venta.routes.js';
 
 
 // Crear la aplicación de Express
