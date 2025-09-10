@@ -1,9 +1,9 @@
-import { pool } from '../../db.connection.js';
+import { pool } from '../../db_connection.js';
 
 // Obtener todos los Usuarios
 export const obtenerUsuarios = async (req, res) => {
     try {
-        const [result] = await pool.query('SELECT * FROM Usuario');
+        const [result] = await pool.query('SELECT * FROM Usuarios');
         res.json(result);
     } catch (error) {
         return res.status(500).json({
@@ -17,7 +17,7 @@ export const obtenerUsuarios = async (req, res) => {
 export const obtenerUsuario = async (req, res) => {
     try {
         const id = req.params.id;
-        const [result] = await pool.query('SELECT * FROM Usuario WHERE id= ?', [id]);
+        const [result] = await pool.query('SELECT * FROM Usuarios WHERE id= ?', [id]);
         if (result.length <= 0) {
             return res.status(404).json({
                 mensaje: `Error al leer los datos. ID ${id} no encontrado.`
@@ -26,7 +26,7 @@ export const obtenerUsuario = async (req, res) => {
         res.json(result[0]);
     } catch (error) {
         return res.status(500).json({
-            mensaje: 'Ha ocurrido un error al leer los datos de las categorias.'
+            mensaje: 'Ha ocurrido un error al leer los datos de las Usuarios.'
         });
     }
 };
@@ -36,7 +36,7 @@ export const registrarUsuario = async (req, res) => {
     try {
         const { nombre, apellido, correo_electronico, contrasena, telefono, genero, rol } = req.body;
         const [result] = await pool.query(
-            'INSERT INTO Usuario (nombre, apellido, correo_electronico, contrasena, telefono, genero, rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
+            'INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono, genero, rol) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [nombre, apellido, correo_electronico, contrasena, telefono, genero, rol]
         );
         res.status(201).json({ id: result.insertId });

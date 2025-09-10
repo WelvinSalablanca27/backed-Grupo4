@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { obtenerUsuarios, obtenerUsuario, registrarUsuario} from '../controllers/Usuario.controller.js';
+import { obtenerUsuarios, obtenerUsuario, registrarUsuario} from '../controllers/Usuarios.controller.js';
 
 const router = Router();
 
-router.get('/Usuario', obtenerUsuarios);
+router.get('/Usuarios', obtenerUsuarios);
 
 router.get ('/Usuario/:id',obtenerUsuario); 
 

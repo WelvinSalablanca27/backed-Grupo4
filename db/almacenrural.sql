@@ -12,14 +12,17 @@ CREATE TABLE Cliente (
   Telefono VARCHAR(8)
 );
 
-CREATE TABLE usuarios ( id INT AUTO_INCREMENT PRIMARY KEY,
- nombre VARCHAR(20) NOT NULL, apellido VARCHAR(20) NOT NULL,
- correo_electronico VARCHAR(40) NOT NULL UNIQUE,
- contrasena VARCHAR(10) NOT NULL,
- telefono VARCHAR(8),
- genero ENUM('masculino', 'femenino'),
- rol ENUM('admin', 'cajero') DEFAULT 'cajero' 
+CREATE TABLE Usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(20) NOT NULL,
+    apellido VARCHAR(20) NOT NULL,
+    correo_electronico VARCHAR(40) NOT NULL UNIQUE,
+    contrasena VARCHAR(60) NOT NULL,
+    telefono VARCHAR(8),
+    genero ENUM('masculino', 'femenino'),
+    rol ENUM('admin', 'cajero') DEFAULT 'cajero'
 );
+
 
 -- Crear tabla Producto
 CREATE TABLE Producto (
@@ -81,8 +84,7 @@ CREATE TABLE Detalles_venta (
   FOREIGN KEY (id_Venta) REFERENCES Venta(id_ventas) ON DELETE CASCADE
 );
 
--- insert Usuarios--
-INSERT INTO usuarios (
+INSERT INTO Usuarios (
     nombre, apellido, correo_electronico, contrasena, telefono, genero, rol
 ) VALUES
 ('Juan', 'Pérez', 'juan.perez@correo.com', '123456789', '55512345', 'masculino', 'cajero'),
@@ -90,6 +92,7 @@ INSERT INTO usuarios (
 ('Luis', 'Martínez', 'luis.mtz@correo.com', '123456789', '55534567', 'masculino', 'cajero'),
 ('María', 'Lopez', 'maria.lopez@correo.com', '123456789', '55545678', 'femenino', 'cajero'),
 ('Carlos', 'Ruiz', 'carlos.ruiz@correo.com', '123456789', '55556789', 'masculino', 'admin');
+
 
 -- Insert Cliente--
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Carlos', 'Andrés', 'Pérez', 'Mendoza', 'Calle 10 #25-34', '31012345');

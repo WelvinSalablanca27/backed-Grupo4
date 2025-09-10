@@ -17,7 +17,7 @@ export const obtenerProductos = async (req, res) => {
 export const obtenerProducto = async (req, res) => {
     try {
         const id_Producto = req.params.id_Producto;
-        const [result] = await pool.query('SELECT * FROM Producto WHERE id_Producto= ?', [iid_Productod]);
+        const [result] = await pool.query('SELECT * FROM Producto WHERE id_Producto= ?', [id_Producto]);
         if (result.length <= 0) {
             return res.status(404).json({
                 mensaje: `Error al leer los datos. id_Producto ${id_Producto} no encontrado.`
@@ -32,7 +32,7 @@ export const obtenerProducto = async (req, res) => {
 };
 
 // Registrar una nueva Categoría
-export const registrarProduco = async (req, res) => {
+export const registrarProductos = async (req, res) => {
     try {
         const { Nombre_Prod,Tipo_Prod,Existencia_Prod,Precio_Costo,Precio_Venta,Fe_caducidad } = req.body;
         const [result] = await pool.query(
