@@ -1,9 +1,15 @@
 import { Router } from 'express';
-import { obtenerClientes } from '../controllers/Cliente.controller.js';
+import { obtenerClientes, obtenerCliente, registrarCliente} from '../controllers/Cliente.controller.js';
 
 const router = Router();
 
 router.get('/clientes', obtenerClientes);
 
-// Rutas
+router.get('/cliente/:id_Cliente', obtenerCliente);
+
+//ruta 
+router.post('/registrarcliente', registrarCliente);
+
+
+//Rutas
 export default router;
