@@ -9,6 +9,7 @@ import rutasDetallesVentas from './src/routes/Detalles_venta.routes.js';
 import rutasProductos from './src/routes/Producto.routes.js';
 import rutasProveedor from './src/routes/Proveedor.routes.js';
 import rutasVenta from './src/routes/Venta.routes.js';
+import rutasUsuario from './src/routes/Usuario.routes.js';
 
 
 // Crear la aplicación de Express
@@ -32,6 +33,7 @@ app.use('/api', rutasDetallesVentas);
 app.use('/api', rutasProductos);
 app.use('/api', rutasProveedor);
 app.use('/api', rutasVenta);
+app.use('/api', rutasUsuario);
 
 // Manejo de rutas no encontradas
 app.use((req, res, next) => {
