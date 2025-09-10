@@ -34,7 +34,7 @@ export const obtenerCliente = async (req, res) => {
 
 
 
-// Registrar una nueva Categoría
+// Registrar un nuevo Cliente
 export const registrarCliente = async (req, res) => {
   try {
     const { Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono } = req.body;
