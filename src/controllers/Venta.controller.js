@@ -50,3 +50,57 @@ export const registrarVenta = async (req, res) => {
     });
   }
 };
+
+// Eliminar una venta por su ID
+export const eliminarventas = async (req, res) => {
+  try {
+    const id_venta = req.params.id_venta;
+    const [result] = await pool.query('DELETE FROM ventas WHERE id_venta = ?', [id_venta]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ 
+        mensaje: 'Error al eliminar la venta. El ID ${id_venta} no fue encontrada'
+       });
+      }
+
+  // Respuestas sin contenido para indicar exito
+     res.sendStatus(204); 
+    }catch (error) {
+      return res.status(500).json({
+        mensaje: 'Ha ocurrido un error al eliminar una venta.',
+        error: error
+      });
+    }
+  }
+
+  // Actualizar una venta por su ID
+export const actualizarVentas = async (req, res) => {
+  try {
+    const id_venta = req.params.id_venta;
+    const { cliente, fecha, total } = req.body;
+
+    if (cliente === undefined || fecha === undefined || total === undefined) {
+      return res.status(400).json({
+        mensaje: 'todos los campos se llenan obligatoriamente).'
+      });
+    }
+
+    const [result] = await pool.query(
+      'UPDATE ventas SET cliente = ?, fecha = ?, total = ? WHERE id_venta = ?',
+      [cliente, fecha, total, id_venta]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `No se encontró una venta con ID ${id_venta}`
+      });
+    }
+
+    res.status(200).json({ mensaje: 'Venta actualizada correctamente.' });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al actualizar la venta.',
+      error: error.message
+    });
+  }
+}

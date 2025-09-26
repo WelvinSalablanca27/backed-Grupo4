@@ -32,7 +32,6 @@ export const obtenerDetalleVenta= async (req, res) => {
 };
 
 
-
 // Registrar una nueva registrarDetalleVenta
 export const registrarDetalleVenta = async (req, res) => {
   try {
@@ -49,3 +48,55 @@ export const registrarDetalleVenta = async (req, res) => {
     });
   }
 };
+
+// Eliminar una venta por su ID
+export const eliminarDetalleventas = async (req, res) => {
+  try {
+    const id_Detalleventas = req.params.id_Detalleventas;
+    const [result] = await pool.query('DELETE FROM ventas WHERE id_DetalleVenta = ?', [id_DetalleVenta]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ 
+        mensaje: 'Error al eliminar la DetalleVenta. El ID ${id_DetalleVenta} no fue encontrada'
+       });
+      }
+
+  // Respuestas sin contenido para indicar exito
+   res.status(204).sed();
+    }catch (error) {
+      return res.status(500).json({
+        mensaje: 'Ha ocurrido un error al eliminar un DetalleVenta.',
+        error: error
+      });
+    }
+  }
+
+  // Actualizar una venta por su ID
+export const actualizarDetalleventas = async (req, res) => {
+  try {
+    const id_DetalleVenta = req.params.id;
+    const { producto, cantidad, precio } = req.body;
+
+    if (!producto || !cantidad || !precio) {
+      return res.status(400).json({ mensaje: 'Todos los campos son obligatorios.' });
+    }
+
+    const [result] = await pool.query(
+      'UPDATE ventas SET producto = ?, cantidad = ?, precio = ? WHERE id_DetalleVenta = ?',
+      [producto, cantidad, precio, id_DetalleVenta]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ 
+        mensaje: `No se encontró DetalleVenta con ID ${id_DetalleVenta}`
+      });
+    }
+
+    res.status(200).json({ mensaje: 'DetalleVenta actualizada correctamente.' });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al actualizar el DetalleVenta.',
+      error: error.message
+    });
+  }
+}
