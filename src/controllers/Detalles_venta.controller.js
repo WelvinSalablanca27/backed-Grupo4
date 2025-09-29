@@ -71,32 +71,31 @@ export const eliminarDetalleventas = async (req, res) => {
     }
   }
 
-  // Actualizar una venta por su ID
-export const actualizarDetalleventas = async (req, res) => {
+ // Actualizar una Venta
+export const actualizarDetalles_venta = async (req, res) => {
   try {
-    const id_DetalleVenta = req.params.id;
-    const { producto, cantidad, precio } = req.body;
-
-    if (!producto || !cantidad || !precio) {
-      return res.status(400).json({ mensaje: 'Todos los campos son obligatorios.' });
-    }
+    const id_DetalleVenta = req.params.id_DetalleVenta;
+    const { id_Venta, id_Producto, Precio_venta, Cantidad_Producto } = req.body;
 
     const [result] = await pool.query(
-      'UPDATE ventas SET producto = ?, cantidad = ?, precio = ? WHERE id_DetalleVenta = ?',
-      [producto, cantidad, precio, id_DetalleVenta]
+      'UPDATE venta SET id_venta = ?, id_Producto = ?, Precio_venta = ?, cantidad_Producto = ? WHERE id_ventas = ?',
+      [id_Venta, id_Producto, Precio_venta, Cantidad_Producto]  
     );
 
     if (result.affectedRows === 0) {
-      return res.status(404).json({ 
-        mensaje: `No se encontró DetalleVenta con ID ${id_DetalleVenta}`
+      return res.status(404).json({
+        mensaje: 'Error al actualizar. ID ${id_DetalleVenta} no encontrado.'
       });
     }
 
-    res.status(200).json({ mensaje: 'DetalleVenta actualizada correctamente.' });
+    res.json({
+      mensaje:' Venta con ID ${id_DetalleVenta} actualizada correctamente.'
+    });
   } catch (error) {
     return res.status(500).json({
-      mensaje: 'Ha ocurrido un error al actualizar el DetalleVenta.',
-      error: error.message
+      mensaje: 'Ha ocurrido un error al actualizar el Detalle_venta.',
+      error: error
     });
   }
-}
+};
+

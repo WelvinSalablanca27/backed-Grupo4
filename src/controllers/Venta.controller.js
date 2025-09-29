@@ -73,34 +73,30 @@ export const eliminarventas = async (req, res) => {
     }
   }
 
-  // Actualizar una venta por su ID
-export const actualizarVentas = async (req, res) => {
+ // Actualizar una Venta
+export const actualizarVenta = async (req, res) => {
   try {
-    const id_venta = req.params.id_venta;
-    const { cliente, fecha, total } = req.body;
-
-    if (cliente === undefined || fecha === undefined || total === undefined) {
-      return res.status(400).json({
-        mensaje: 'todos los campos se llenan obligatoriamente).'
-      });
-    }
+    const id_ventas = req.params.id_ventas;
+    const { id_Cliente, Fe_Venta, total_venta } = req.body;
 
     const [result] = await pool.query(
-      'UPDATE ventas SET cliente = ?, fecha = ?, total = ? WHERE id_venta = ?',
-      [cliente, fecha, total, id_venta]
+      'UPDATE venta SET id_Cliente = ?, Fe_Venta = ?, total_venta = ? WHERE id_ventas = ?',
+      [id_Cliente, Fe_Venta, total_venta, id_ventas]  
     );
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
-        mensaje: `No se encontró una venta con ID ${id_venta}`
+        mensaje: 'Error al actualizar. ID ${id_ventas} no encontrado.'
       });
     }
 
-    res.status(200).json({ mensaje: 'Venta actualizada correctamente.' });
+    res.json({
+      mensaje:' Venta con ID ${id_ventas} actualizada correctamente.'
+    });
   } catch (error) {
     return res.status(500).json({
       mensaje: 'Ha ocurrido un error al actualizar la venta.',
-      error: error.message
+      error: error
     });
   }
-}
+};
