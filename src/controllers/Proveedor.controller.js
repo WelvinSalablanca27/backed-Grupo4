@@ -75,3 +75,29 @@ export const eliminarProveedor = async (req, res) =>  {
     });
   }
 };
+
+
+// Controlador para actualizar parcialmente una Proveedor por su ID
+export const actualizarProveedorPatch = async (req, res) => {
+  try {
+    const { id_Proveedor } = req.params;
+    const datos = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE Proveedor SET ? WHERE id_Proveedor = ?',
+      [datos, id_Proveedor]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Proveedor con ID ${id_Proveedor} no encontrada.`
+      });
+    }
+
+    res.status(200).json({
+      mensaje: `Proveedor con ID ${id_Proveedor} actualizada.`
+    });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar la Proveedor.', error });
+  }
+};
