@@ -7,7 +7,7 @@ const router = Router();
 router.get('/Proveedores', obtenerProveedores);
 
 // Rutas
-router.get('/Proveedores/:id_Proveedor', obtenerProveedor);
+router.get('/Proveedores/:id_DetalleCompra', obtenerProveedor);
 
 // Rutas
 router.post('/registrarProveedor', registrarProveedor);

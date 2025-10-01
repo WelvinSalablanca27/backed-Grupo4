@@ -13,8 +13,6 @@ export const obtenerProveedores = async (req, res) => {
   }
 };
 
-
-
 // Obtener una Proveedor por su ID
 export const obtenerProveedor = async (req, res) => {
   try {
@@ -32,7 +30,6 @@ export const obtenerProveedor = async (req, res) => {
     });
   }
 };
-
 
 
 // Registrar una nueva Proveedor
