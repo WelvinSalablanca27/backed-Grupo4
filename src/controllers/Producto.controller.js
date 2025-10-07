@@ -47,3 +47,49 @@ export const registrarProductos = async (req, res) => {
         });
     }
 };
+
+export const eliminarProducto = async (req, res) =>  {
+  try {
+    const id_Producto = req.params.id_Producto;
+    const [result] = await pool.query('DELETE FROM Producto WHERE id_Producto= ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar el Producto. ID ${id_Producto} no fue encontrado.`
+      });
+    }
+
+    res.status(200).json({
+      mensaje: `El Producto con ID ${id_Producto} fue eliminada correctamente.`
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al eliminar el Producto.',
+      error: error
+    });
+  }
+};
+
+export const actualizarProductoPatch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const datos = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE Producto SET ? WHERE id_Producto = ?',
+      [datos, id_Producto]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Producto con ID ${id_Producto} no encontrada.`
+      });
+    }
+
+    res.status(200).json({
+      mensaje: `Producto con ID ${id_Producto} actualizada.`
+    });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar los Productos.', error });
+  }
+};

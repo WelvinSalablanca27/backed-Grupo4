@@ -47,3 +47,50 @@ export const registrarUsuario = async (req, res) => {
         });
     }
 };
+
+export const eliminarUsuario = async (req, res) =>  {
+  try {
+    const id = req.params.id;
+    const [result] = await pool.query('DELETE FROM Usuarios WHERE id= ?', [id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Error al eliminar el Usuario. ID ${id} no fue encontrado.`
+      });
+    }
+
+    res.status(200).json({
+      mensaje: `El Usuario con ID ${id} fue eliminada correctamente.`
+    });
+  } catch (error) {
+    return res.status(500).json({
+      mensaje: 'Ha ocurrido un error al eliminar el Usuario.',
+      error: error
+    });
+  }
+};
+
+
+export const actualizarUsuarioPatch = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const datos = req.body;
+
+    const [result] = await pool.query(
+      'UPDATE Usuarios SET ? WHERE id = ?',
+      [datos, id]
+    );
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        mensaje: `Usuario con ID ${id} no encontrada.`
+      });
+    }
+
+    res.status(200).json({
+      mensaje: `Usuario con ID ${id} actualizada.`
+    });
+  } catch (error) {
+    res.status(500).json({ mensaje: 'Error al actualizar los Usuarios.', error });
+  }
+};
