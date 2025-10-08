@@ -1,30 +1,30 @@
 Create database almacenrural;
 use almacenrural;
 
--- Crear tabla Cliente
+-- Crear tabla Cliente --
 CREATE TABLE Cliente (
   id_Cliente INT AUTO_INCREMENT PRIMARY KEY,
   Nombre1 VARCHAR(30),
   Nombre2 VARCHAR(30),
   Apellido1 VARCHAR(30),
   Apellido2 VARCHAR(30),
-  Direccion VARCHAR(60),
+  Direccion VARCHAR(80),
   Telefono VARCHAR(8)
 );
 
+-- Crear tabla Usuarios --
 CREATE TABLE Usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL,
     apellido VARCHAR(20) NOT NULL,
     correo_electronico VARCHAR(40) NOT NULL UNIQUE,
-    contrasena VARCHAR(60) NOT NULL,
+    contrasena VARCHAR(18) NOT NULL,
     telefono VARCHAR(8),
     genero ENUM('masculino', 'femenino'),
     rol ENUM('admin', 'cajero') DEFAULT 'cajero'
 );
 
-
--- Crear tabla Producto
+-- Crear tabla Producto --
 CREATE TABLE Producto (
   id_Producto INT AUTO_INCREMENT PRIMARY KEY,
   Nombre_Prod VARCHAR(30),
@@ -35,7 +35,7 @@ CREATE TABLE Producto (
   Fe_caducidad DATE
 );
 
--- Crear tabla Proveedor
+-- Crear tabla Proveedor --
 CREATE TABLE Proveedor (
   id_Proveedor INT AUTO_INCREMENT PRIMARY KEY,
   Nombre_Proveedor VARCHAR(30),
@@ -43,12 +43,11 @@ CREATE TABLE Proveedor (
   Tipo_distribuidor VARCHAR(30)
 );
 
--- Crear tabla Compra (corregida)
+-- Crear tabla Compra --
 CREATE TABLE Compra (
   id_compra INT AUTO_INCREMENT PRIMARY KEY,
   id_Proveedor INT,
   Fe_compra DATE,
-  total_compra DECIMAL(10,2) NOT NULL CHECK (total_compra >= 0),
   FOREIGN KEY (id_Proveedor) REFERENCES Proveedor(id_Proveedor) ON DELETE CASCADE
 );
 
@@ -64,16 +63,16 @@ CREATE TABLE DetalleCompra (
   FOREIGN KEY (id_Producto) REFERENCES Producto(id_Producto) ON DELETE CASCADE,
   FOREIGN KEY (id_compra) REFERENCES Compra(id_compra) ON DELETE CASCADE
 );
--- Crear tabla Venta
+
+-- Crear tabla Venta --
 CREATE TABLE Venta (
   id_ventas INT AUTO_INCREMENT PRIMARY KEY,
   id_Cliente INT,
   Fe_Venta DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  total_venta DECIMAL(10,2) NOT NULL CHECK (total_venta >= 0),
   FOREIGN KEY (id_Cliente) REFERENCES Cliente(id_Cliente) ON DELETE CASCADE
 );
 
--- Crear tabla Detalles_venta
+-- Crear tabla Detalles_venta --
 CREATE TABLE Detalles_venta (
   id_DetalleVenta INT AUTO_INCREMENT PRIMARY KEY,
   id_Venta INT,
@@ -84,17 +83,19 @@ CREATE TABLE Detalles_venta (
   FOREIGN KEY (id_Venta) REFERENCES Venta(id_ventas) ON DELETE CASCADE
 );
 
-INSERT INTO Usuarios (
-    nombre, apellido, correo_electronico, contrasena, telefono, genero, rol
-) VALUES
-('Juan', 'Pérez', 'juan.perez@correo.com', '123456789', '55512345', 'masculino', 'cajero'),
-('Ana', 'Gómez', 'ana.gomez@correo.com', '123456789', '55523456', 'femenino', 'admin'),
-('Luis', 'Martínez', 'luis.mtz@correo.com', '123456789', '55534567', 'masculino', 'cajero'),
-('María', 'Lopez', 'maria.lopez@correo.com', '123456789', '55545678', 'femenino', 'cajero'),
-('Carlos', 'Ruiz', 'carlos.ruiz@correo.com', '123456789', '55556789', 'masculino', 'admin');
+-- Crear tabla bitacora_general --
+CREATE TABLE IF NOT EXISTS bitacora_general (
+    id_bitacora INT AUTO_INCREMENT PRIMARY KEY,
+    tabla_afectada VARCHAR(50) NOT NULL,
+    tipo_cambio VARCHAR(20) NOT NULL,
+    usuario VARCHAR(100) NOT NULL,
+    id_cliente INT,
+    valores_anteriores TEXT,
+    valores_nuevos TEXT,
+    fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
-
--- Insert Cliente--
+-- INSERT INTO Cliente --
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Carlos', 'Andrés', 'Pérez', 'Mendoza', 'Calle 10 #25-34', '31012345');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Laura', 'María', 'Gómez', 'Ríos', 'Carrera 15 #12-80', '31123456');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('David','Jose' , 'Ruiz', 'Cano', 'Av. Central 45-90', '31234567');
@@ -104,62 +105,26 @@ INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Juliana', 'Beatriz', 'Ramírez', 'Duarte', 'Carrera 9 #8-23', '31678901');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Andrés', 'Carlos', 'Martínez', 'Salas', 'Av. Sur #7-50', '31789012');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Daniela', 'Camila', 'Castaño', 'Luna', 'Calle 5 #11-44', '31890123');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Felipe', 'José', 'Morales', 'García', 'Cra 14 #9-90', '31901234');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Valentina', NULL, 'Navarro', 'Torres', 'Calle 6 #14-25', '32012345');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Esteban', 'Iván', 'Vargas', 'Mejía', 'Carrera 17 #10-88', '32123456');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Paula', 'Andrea', 'Silva', 'Ortiz', 'Av. Libertador #100-20', '32234567');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Camilo', NULL, 'Herrera', 'Nieves', 'Calle 2 #9-12', '32345678');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Gabriela', 'Fernanda', 'Patiño', 'Quintero', 'Cra 19 #20-56', '32456789');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Julián', 'Alejandro', 'Montoya', 'Bautista', 'Carrera 1 #3-78', '32567890');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Mariana', NULL, 'Rojas', 'Suárez', 'Calle 3 #7-67', '32678901');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Sebastián', 'Enrique', 'Guzmán', 'Castañeda', 'Av. Norte #34-21', '32789012');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Isabella', 'Natalia', 'León', 'Carrillo', 'Cra 11 #12-56', '32890123');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Tomás', 'Mauricio', 'Cruz', 'Delgado', 'Calle 7 #4-89', '32901234');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Lucía', NULL, 'Álvarez', 'Moreno', 'Carrera 5 #3-45', '33012345');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Santiago', 'Eduardo', 'Peña', 'Rincón', 'Cra 13 #6-78', '33123456');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Antonia', 'Victoria', 'Bermúdez', 'Acosta', 'Av. Oriental #12-01', '33234567');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Mateo', NULL, 'Molina', 'Guerrero', 'Calle 11 #19-98', '33345678');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Emilia', 'Rocío', 'Valencia', 'Sepúlveda', 'Cra 2 #2-34', '33456789');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Simón', 'Ricardo', 'Arias', 'Gómez', 'Carrera 6 #17-71', '33567890');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Renata', NULL, 'Del Valle', 'Escobar', 'Calle 13 #8-92', '33678901');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Juan', 'Esteban', 'Pineda', 'Vega', 'Av. Boyacá #78-40', '33789012');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Regina', 'Marcela', 'Soto', 'Maldonado', 'Cra 21 #23-12', '33890123');
-INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Pedro', NULL, 'Gallego', 'Villalba', 'Calle 4 #5-15', '33901234');
 
+-- INSERT INTO Usuarios --
+INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono, genero, rol) VALUES
+('Juan', 'Pérez', 'juan.perez@correo.com', '123456789', '55512345', 'masculino', 'cajero'),
+('Ana', 'Gómez', 'ana.gomez@correo.com', '123456789', '55523456', 'femenino', 'admin'),
+('Luis', 'Martínez', 'luis.mtz@correo.com', '123456789', '55534567', 'masculino', 'cajero'),
+('María', 'Lopez', 'maria.lopez@correo.com', '123456789', '55545678', 'femenino', 'cajero'),
+('Carlos', 'Ruiz', 'carlos.ruiz@correo.com', '123456789', '55556789', 'masculino', 'admin');
 
 -- INSERT Producto --
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Dog Chow Adulto 15kg', 'Alimento', 25, 120000, 90000, '2025-12-31');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Cat Chow Gato 8kg', 'Alimento', 18, 85000, 60000, '2025-11-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Antipulgas Frontline', 'Medicamento', 30, 40000, 25000, '2026-06-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Shampoo Canino 500ml', 'Aseo', 50, 20000, 12000, '2026-01-15');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Juguete Hueso de Goma', 'Accesorio', 40, 15000, 8000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Arena para Gato 10kg', 'Aseo', 35, 30000, 18000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Vitaminas para Perro', 'Medicamento', 20, 25000, 15000, '2026-05-01');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Comedero Doble Acero', 'Accesorio', 45, 28000, 16000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Collar Antipulgas', 'Accesorio', 60, 22000, 12000, '2026-03-15');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Pelota con sonido', 'Accesorio', 70, 10000, 6000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Alimento Húmedo Perro 340g', 'Alimento', 80, 9000, 6000, '2025-10-10');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Alimento Húmedo Gato 340g', 'Alimento', 75, 9500, 6500, '2025-09-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Cepillo para Perro', 'Aseo', 40, 18000, 10000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Toallitas Húmedas Mascota', 'Aseo', 55, 12000, 8000, '2026-02-28');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Antibiótico Veterinario', 'Medicamento', 25, 50000, 30000, '2026-04-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Suplemento Articular', 'Medicamento', 15, 60000, 35000, '2026-07-31');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Juguete Cuerda Trenzada', 'Accesorio', 30, 13000, 7000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Rascador para Gato', 'Accesorio', 10, 40000, 25000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Transportadora Pequeña', 'Accesorio', 12, 75000, 50000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Pipeta Antiparásitos', 'Medicamento', 22, 30000, 20000, '2026-08-15');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Alimento Puppy 10kg', 'Alimento', 28, 100000, 70000, '2026-01-31');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Alimento Kitten 5kg', 'Alimento', 24, 65000, 45000, '2025-10-31');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Desparasitante Interno', 'Medicamento', 32, 27000, 18000, '2026-09-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Juguete Ratón Catnip', 'Accesorio', 50, 8000, 5000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Correa Extensible 5m', 'Accesorio', 35, 30000, 18000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Tapete Entrenador', 'Aseo', 60, 22000, 15000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Shampoo Antipulgas', 'Aseo', 38, 26000, 16000, '2026-02-28');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Snacks de Pollo 500g', 'Alimento', 45, 18000, 12000, '2025-12-01');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Snacks de Pescado 500g', 'Alimento', 47, 19000, 13000, '2025-12-01');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Perfume para Mascotas', 'Aseo', 20, 25000, 15000, '2026-03-31');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Kit Higiene Dental', 'Aseo', 30, 28000, 18000, '2026-04-15');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Ropa Invierno Mascota', 'Accesorio', 20, 35000, 22000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Dog Chow Adulto 15kg', 'Alimento', 25, 120000, 90000, '2025-12-31');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Cat Chow Gato 8kg', 'Alimento', 18, 85000, 60000, '2025-11-30');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Antipulgas Frontline', 'Medicamento', 30, 40000, 25000, '2026-06-30');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Shampoo Canino 500ml', 'Aseo', 50, 20000, 12000, '2026-01-15');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Juguete Hueso de Goma', 'Accesorio', 40, 15000, 8000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Arena para Gato 10kg', 'Aseo', 35, 30000, 18000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Vitaminas para Perro', 'Medicamento', 20, 25000, 15000, '2026-05-01');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Comedero Doble Acero', 'Accesorio', 45, 28000, 16000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Collar Antipulgas', 'Accesorio', 60, 22000, 12000, '2026-03-15');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Pelota con sonido', 'Accesorio', 70, 10000, 6000, NULL);
 
 -- INSERT Proveedores --
 INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuidora AnimalCare', '30012345', 'Alimentos');
@@ -172,58 +137,18 @@ INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Bi
 INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Veterinaria Global', '30823456', 'Medicamentos');
 INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('PetCare Solutions', '30934567', 'Alimentos');
 INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascota Sana', '31045678', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Accesorios PetZone', '31156789', 'Accesorios');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuidora Zootec', '31267890', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Salud Animal Express', '31378901', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('EcoPet Proveedor', '31489012', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Accesorios Deluxe', '31590123', 'Accesorios');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('MercadoPet', '31601234', 'Variado');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Natura', '31712345', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Veterinaria y Más', '31823456', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('CleanVet Ltda.', '31934567', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('ZooAccesorios S.A.', '32045678', 'Accesorios');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Universal', '32156789', 'Variado');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Animal Life Suministros', '32267890', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('VetBio Group', '32378901', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascotas Limpias', '32489012', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuciones PetHouse', '32590123', 'Accesorios');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Alianza Animal', '32601234', 'Variado');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Animal Foods Inc.', '32712345', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('VetMed Express', '32823456', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('HigienePet', '32934567', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('PetFashion Store', '33045678', 'Accesorios');
 
 -- INSERT Compra --
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (1, '2025-01-10', 3015.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (2, '2025-02-14', 8100.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (3, '2025-03-20', 5300.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (4, '2025-04-05', 1900.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (5, '2025-05-01', 359.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (6, '2025-07-01', 440.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (7, '2025-01-15', 672.50);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (8, '2025-02-20', 1890.75);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (9, '2025-03-01', 2550.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (10, '2025-04-10', 1040.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (11, '2025-05-12', 300.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (12, '2025-06-15', 740.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (13, '2025-07-20', 1299.99);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (14, '2025-08-01', 2880.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (15, '2025-09-05', 3980.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (16, '2025-10-11', 500.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (17, '2025-11-01', 1675.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (18, '2025-12-24', 7800.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (19, '2025-01-30', 625.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (20, '2025-02-25', 940.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (21, '2025-03-15', 470.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (22, '2025-04-22', 1590.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (23, '2025-05-30', 2200.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (24, '2025-06-05', 760.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (25, '2025-07-10', 3330.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (26, '2025-08-14', 1475.50);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (27, '2025-09-18', 880.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (28, '2025-10-25', 1920.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (29, '2025-11-29', 2399.00);
-INSERT INTO Compra (id_Proveedor, Fe_compra, total_compra) VALUES (30, '2025-12-31', 6000.00);
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (1, '2025-01-10');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (2, '2025-02-14');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (3, '2025-03-20');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (4, '2025-04-05');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (5, '2025-05-01');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (6, '2025-07-01');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (7, '2025-01-15');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (8, '2025-02-20');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (9, '2025-03-01');
+INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (10, '2025-04-10');
 
 -- INSERT Detalle Compra --
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (1, 1, '2025-01-10', '2025-12-31', 900, 60);
@@ -236,57 +161,17 @@ INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, P
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (8, 8, '2025-04-15', '2025-12-15', 7200, 55);
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (9, 9, '2025-04-20', '2025-12-31', 4500, 45);
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (10, 10, '2025-04-25', NULL, 9800, 35);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (11, 11, '2025-05-01', '2026-03-31', 11000, 60);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (12, 12, '2025-05-05', NULL, 5000, 20);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (13, 13, '2025-05-10', '2025-11-30', 7600, 70);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (14, 14, '2025-05-15', NULL, 2300, 15);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (15, 15, '2025-05-20', '2026-01-31', 6700, 33);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (16, 16, '2025-05-25', '2026-05-01', 8800, 90);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (17, 17, '2025-06-01', NULL, 9100, 45);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (18, 18, '2025-06-05', '2026-07-15', 13400, 50);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (19, 19, '2025-06-10', NULL, 3300, 22);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (20, 20, '2025-06-15', '2026-02-10', 4400, 55);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (21, 21, '2025-06-20', '2025-12-31', 10200, 60);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (22, 22, '2025-06-25', NULL, 8900, 70);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (23, 23, '2025-07-01', '2026-08-20', 12000, 50);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (24, 24, '2025-07-05', NULL, 2500, 18);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (25, 25, '2025-07-10', '2025-11-30', 3900, 27);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (26, 26, '2025-07-15', '2026-01-15', 7400, 48);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (27, 27, '2025-07-20', NULL, 9100, 42);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (28, 28, '2025-07-25', '2026-03-10', 6600, 36);
-INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (29, 29, '2025-07-30', NULL, 5400, 24);
 
--- INSERT --
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (1, '2025-04-01 10:00:00', 452.25);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (2, '2025-04-02 11:30:00', 1275.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (3, '2025-04-03 09:45:00', 640.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (4, '2025-04-04 15:00:00', 200.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (5, '2025-04-05 14:15:00', 180.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (6, '2025-04-06 13:25:00', 950.75);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (7, '2025-04-07 12:00:00', 305.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (8, '2025-04-08 16:45:00', 1220.50);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (9, '2025-04-09 10:30:00', 780.90);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (10, '2025-04-10 09:00:00', 620.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (11, '2025-04-11 14:10:00', 512.80);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (12, '2025-04-12 15:20:00', 298.40);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (13, '2025-04-13 11:35:00', 875.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (14, '2025-04-14 10:50:00', 999.99);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (15, '2025-04-15 13:40:00', 310.20);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (16, '2025-04-16 12:25:00', 455.60);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (17, '2025-04-17 17:00:00', 150.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (18, '2025-04-18 16:10:00', 825.45);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (19, '2025-04-19 09:50:00', 215.90);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (20, '2025-04-20 11:15:00', 999.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (21, '2025-04-21 10:45:00', 470.30);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (22, '2025-04-22 13:05:00', 678.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (23, '2025-04-23 12:30:00', 385.75);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (24, '2025-04-24 14:00:00', 420.50);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (25, '2025-04-25 15:45:00', 888.88);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (26, '2025-04-26 10:10:00', 299.99);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (27, '2025-04-27 11:55:00', 730.20);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (28, '2025-04-28 16:35:00', 601.00);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (29, '2025-04-29 13:20:00', 570.30);
-INSERT INTO Venta (id_Cliente, Fe_Venta, total_venta) VALUES (30, '2025-04-30 12:45:00', 777.77);
+-- INSERT INTO Venta --
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (1, '2025-04-01 10:00:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (2, '2025-04-02 11:30:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (3, '2025-04-03 09:45:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (4, '2025-04-04 15:00:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (5, '2025-04-05 14:15:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (6, '2025-04-06 13:25:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (7, '2025-04-07 12:00:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (8, '2025-04-08 16:45:00');
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (9, '2025-04-09 10:30:00');
 
 -- INSERT Detalle Venta --
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (1, 2, 15000, 1);
@@ -298,30 +183,9 @@ INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Product
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (7, 7, 12000, 4);
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (8, 2, 15000, 2);
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (9, 3, 18000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (10, 4, 25000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (11, 5, 27000, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (12, 1, 11000, 3);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (13, 6, 32000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (14, 2, 14000, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (15, 7, 16000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (16, 4, 21000, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (17, 3, 9500, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (18, 5, 27000, 3);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (19, 6, 31000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (20, 1, 11500, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (21, 2, 15500, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (22, 7, 17000, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (23, 3, 10000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (24, 4, 20000, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (25, 5, 28000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (26, 6, 29500, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (27, 1, 13000, 3);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (28, 2, 16000, 1);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (29, 4, 24000, 2);
-INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (30, 7, 18000, 1);
+
 
 -- Procedimiento almacenado --
-
 DELIMITER //
 CREATE PROCEDURE agregar_cliente(
   IN p_Nombre1 VARCHAR(30),
@@ -382,15 +246,15 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE agregar_producto(
   IN p_Nombre_Prod VARCHAR(30),
-  IN p_Tipo_Prod VARCHAR(20),
+  IN p_Num VARCHAR(20),
   IN p_Existencia_Prod DECIMAL(6,2),
   IN p_Precio_Venta DECIMAL(10,2),
   IN p_Precio_Costo DECIMAL(10,2),
   IN p_Fe_caducidad DATE
 )
 BEGIN
-  INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad)
-  VALUES (p_Nombre_Prod, p_Tipo_Prod, p_Existencia_Prod, p_Precio_Venta, p_Precio_Costo, p_Fe_caducidad);
+  INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad)
+  VALUES (p_Nombre_Prod, p_Num, p_Existencia_Prod, p_Precio_Venta, p_Precio_Costo, p_Fe_caducidad);
 END //
 DELIMITER ;
 
@@ -406,7 +270,7 @@ CREATE PROCEDURE obtener_producto_por_id(
   IN p_id_producto INT
 )
 BEGIN
-  SELECT Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad
+  SELECT Nombre_Prod, Num, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad
   FROM Producto
   WHERE id_Producto = p_id_producto;
 END //
@@ -438,7 +302,6 @@ BEGIN
   END IF;
 END //
 DELIMITER ;
-
 
 DELIMITER //
 CREATE PROCEDURE agregar_proveedor(
@@ -492,7 +355,6 @@ BEGIN
   WHERE Tipo_distribuidor LIKE CONCAT('%', p_tipo_distribuidor, '%');
 END //
 DELIMITER ;
-
 
 DELIMITER //
 CREATE PROCEDURE agregar_compra(
@@ -641,7 +503,6 @@ SELECT
 FROM Producto p
 WHERE p.Existencia_Prod < 10;
 
-
 CREATE VIEW Vista_Productos_Sin_Ventas AS
 SELECT 
     p.Nombre_Prod
@@ -722,7 +583,6 @@ JOIN DetalleCompra dc ON c.id_compra = dc.id_compra
 JOIN Producto p ON dc.id_Producto = p.id_Producto
 LEFT JOIN Detalles_venta dv ON p.id_Producto = dv.id_Producto
 WHERE dv.id_DetalleVenta IS NULL;
-
 
 DELIMITER // 
 CREATE FUNCTION obtener_stock_producto(p_id_Producto INT)
@@ -821,12 +681,10 @@ Create USER IF NOT EXISTS 'Azter'@'localhost' IDENTIFIED BY 'Cli231';
 GRANT INSERT, UPDATE ON almacenrural.Cliente TO 'Azter'@'localhost';
 FLUSH PRIVILEGES;
 
-GRANT CREATE, DROP ON gestion_usuarios.usuarios TO 'jose'@'localhost';
 
 SHOW GRANTS FOR 'welvin'@'localhost';
 SHOW GRANTS FOR 'Stiven'@'localhost';
 SHOW GRANTS FOR 'Azter'@'localhost';
-SHOW GRANTS FOR 'jose'@'localhost';
 
   -- modificar CONTRASEÑA --
 
@@ -835,7 +693,6 @@ ALTER USER 'welvin'@'localhost' IDENTIFIED BY 'nuevaClave456';
 -- revoke los privilegio --
 
 REVOKE SELECT ON almacenrural.* FROM 'welvin'@'localhost';
-REVOKE ALL PRIVILEGES ON almacenrural.* FROM 'welvin'@'localhost';
 
 -- ELIMINAR USUARIO
 DROP USER 'welvin'@'localhost';
@@ -845,10 +702,7 @@ SHOW GRANTS FOR 'editor1'@'localhost';
 SHOW GRANTS FOR 'lector2'@'localhost';
 SHOW GRANTS FOR 'gestor'@'localhost';
 
-
-
 DELIMITER $$
-
 CREATE EVENT cierre_compra_automatico
 ON SCHEDULE EVERY 1 DAY
 STARTS TIMESTAMP(CURRENT_DATE, '23:59:00')  -- se ejecuta a las 11:59 PM
@@ -865,8 +719,6 @@ END$$
 
 DELIMITER ;
 
-
-#----------#
 DELIMITER $$
 
 CREATE EVENT cierre_venta_automatico
@@ -884,3 +736,431 @@ BEGIN
 END$$
 
 DELIMITER ;
+
+-- TIGGER PARA LA BITACORA --
+-- Trigger Insert Cliente--
+Delimiter //
+CREATE TRIGGER trg_insert_cliente
+AFTER INSERT ON cliente
+FOR EACH ROW
+BEGIN
+    INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos
+    )
+     VALUES ( 'Cliente', 'INSERT', CURRENT_USER(), NEW.id_cliente,
+     CONCAT('Nombre1: ', NEW.Nombre1, ', Nombre2: ', NEW.Nombre2, ', Apellido1: ', NEW.Apellido1, ', Apellido2: ', NEW.Apellido2, ', Direccion: ', NEW.Direccion, ', Telefono: ', NEW.Telefono)
+     );
+     END //
+     DELIMITER ;
+     
+     DELIMITER //
+CREATE TRIGGER trg_update_cliente
+AFTER UPDATE ON cliente
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_cliente,
+    valores_anteriores, valores_nuevos
+  )
+  VALUES (
+    'Producto', 'UPDATE', CURRENT_USER(), NEW.id_cliente,
+    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Aoellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono),
+    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Aoellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono));
+END //
+DELIMITER ;
+
+DELIMITER // 
+CREATE TRIGGER trg_delete_cliente
+AFTER DELETE ON cliente
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores
+  )
+  VALUES (
+    'Producto', 'DELETE', CURRENT_USER(), OLD.id_cliente,
+    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Aoellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono)
+  );
+END //
+DELIMITER ;
+
+
+-- Producto ---
+-- Trigger para INSERT Producto ---
+DELIMITER // 
+CREATE TRIGGER trg_insert_producto
+AFTER INSERT ON Producto
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto, valores_nuevos
+  )
+  VALUES (
+    'Producto', 'INSERT', CURRENT_USER(), NEW.id_Producto,
+    CONCAT('Nombre_Prod: ', NEW.Nombre_Prod, ', Num: ', NEW.Num, ', Existencia_Prod: ', NEW.Existencia_Prod, ', Precio_Costo: ', NEW.Precio_Costo, ', Precio_Venta: ', NEW.Precio_Venta, ', Fe_caducidad: ', NEW.Fe_caducidad)
+  );
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_update_producto
+AFTER UPDATE ON Producto
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto,
+    valores_anteriores, valores_nuevos
+  )
+  VALUES (
+    'Producto', 'UPDATE', CURRENT_USER(), NEW.id_Producto,
+    CONCAT('Nombre_Prod: ', OLD.Nombre_Prod, ', Num: ', OLD.Num, ', Existencia_Prod: ', OLD.Existencia_Prod, ', Precio_Costo: ', OLD.Precio_Costo, ', Precio_Venta: ', OLD.Precio_Venta, ', Fe_caducidad: ', OLD.Fe_caducidad),
+    CONCAT('Nombre_Prod: ', NEW.Nombre_Prod, ', Num: ', NEW.Num, ', Existencia_Prod: ', NEW.Existencia_Prod, ', Precio_Costo: ', NEW.Precio_Costo, ', Precio_Venta: ', NEW.Precio_Venta, ', Fe_caducidad: ', NEW.Fe_caducidad));
+END //
+DELIMITER ;
+
+DELIMITER // 
+CREATE TRIGGER trg_delete_producto
+AFTER DELETE ON Producto
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto, valores_anteriores
+  )
+  VALUES (
+    'Producto', 'DELETE', CURRENT_USER(), OLD.id_Producto,
+    CONCAT('Nombre_Prod: ', OLD.Nombre_Prod, ', Num: ', OLD.Num, ', Existencia_Prod: ', OLD.Existencia_Prod, ', Precio_Costo: ', OLD.Precio_Costo, ', Precio_Venta: ', OLD.Precio_Venta, ', Fe_caducidad: ', OLD.Fe_caducidad)
+  );
+END //
+DELIMITER ;
+
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Señillas alimenticias', 'Alimento', 25, 120000, 90000, '2027-10-20');
+
+UPDATE Producto SET Nombre_Prod = 'aveyanas', Num = 'alimentos', Existencia_Prod = 150.00, Precio_Costo = 25.50, Precio_Venta = 40.00, Fe_caducidad = '2025-12-31'
+WHERE id_Producto = 1;
+
+DELETE FROM Producto
+WHERE id_Producto = 1;
+
+-- Usuario--
+DELIMITER //
+CREATE TRIGGER trg_insert_usuarios
+AFTER INSERT ON Usuarios
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto, valores_nuevos
+  )
+  VALUES (
+    'Usuarios', 'INSERT', CURRENT_USER(), NEW.id,
+    CONCAT('nombre: ', NEW.nombre, ', apellido: ', NEW.apellido, ', correo: ', NEW.correo_electronico, ', telefono: ', NEW.telefono, ', genero: ', NEW.genero, ', rol: ', NEW.rol)
+  );
+END//
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_update_usuarios
+AFTER UPDATE ON Usuarios
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto, valores_anteriores, valores_nuevos
+  )
+  VALUES (
+    'Usuarios', 'UPDATE', CURRENT_USER(), NEW.id,
+    CONCAT('nombre: ', OLD.nombre, ', apellido: ', OLD.apellido, ', correo: ', OLD.correo_electronico, ', telefono: ', OLD.telefono, ', genero: ', OLD.genero, ', rol: ', OLD.rol),
+    CONCAT('nombre: ', NEW.nombre, ', apellido: ', NEW.apellido, ', correo: ', NEW.correo_electronico, ', telefono: ', NEW.telefono, ', genero: ', NEW.genero, ', rol: ', NEW.rol)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_delete_usuarios
+AFTER DELETE ON Usuarios
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto, valores_anteriores
+  )
+  VALUES (
+    'Usuarios', 'DELETE', CURRENT_USER(), OLD.id,
+    CONCAT('nombre: ', OLD.nombre, ', apellido: ', OLD.apellido, ', correo: ', OLD.correo_electronico, ', telefono: ', OLD.telefono, ', genero: ', OLD.genero, ', rol: ', OLD.rol)
+  );
+END //
+
+DELIMITER ;
+
+INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono, genero, rol)
+VALUES ('Carlos', 'Ramírez', 'carlos.ramirez@example.com', 'clave123', '88887777', 'masculino', 'admin');
+
+UPDATE Usuarios
+SET telefono = '77778888', rol = 'cajero'
+WHERE id = 1;
+
+DELETE FROM Usuarios
+WHERE id = 1;
+
+-- Proveedor ---
+
+DELIMITER //
+CREATE TRIGGER trg_insert_proveedor
+AFTER INSERT ON Proveedor
+FOR EACH ROW
+BEGIN
+ 
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
+  )
+  VALUES (
+  'Proveedor', 'INSERT',  CURRENT_USER(), NEW.id,
+  CONCAT ( 'id_Proveedor', NEW.id_Proveedor,'Nombre_Proveedor', NEW.Nombre_Proveedor, 'Telefono', NEW.Telefono, 'Tipo_distribuidor', NEW.Tipo_distribuidor)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_proveedor_update
+AFTER UPDATE ON Proveedor
+FOR EACH ROW
+BEGIN
+  -- Insertar en bitácora general
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
+  )
+  VALUES ('Proveedor', 'UPDATE',CURRENT_USER(), NEW.id_Proveedor,
+ CONCAT ( 'Nombre_Proveedor', OLD.Nombre_Proveedor, 'Telefono', OLD.Telefono, 'Tipo_distribuidor', OLD.Tipo_distribuidor),
+ CONCAT ( 'Nombre_Proveedor', NEW.Nombre_Proveedor, 'Telefono', NEW.Telefono, 'Tipo_distribuidor', NEW.Tipo_distribuidor)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg__delete_proveedor
+AFTER DELETE ON Proveedor
+FOR EACH ROW
+BEGIN
+  
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
+  VALUES ('Proveedor', 'DELETE',  CURRENT_USER(), OLD.id_Proveedor,
+ CONCAT ('Nombre_Proveedor', OLD.Nombre_Proveedor, 'Telefono', OLD.Telefono, 'Tipo_distribuidor', OLD.Tipo_distribuidor)
+ );
+END //
+DELIMITER ;
+
+-- Insertar proveedor--
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor)
+VALUES ('Distribuidora X', '80012345', 'Alimentos');
+
+-- Actualizar proveedor --
+UPDATE Proveedor
+SET Telefono = '88889999'
+WHERE id_Proveedor = 1;
+
+-- Eliminar proveedor
+DELETE FROM Proveedor 
+WHERE id_Proveedor = 1;
+
+-- Compra --
+
+DELIMITER //
+CREATE TRIGGER trg_insert_compra
+AFTER INSERT ON Compra
+FOR EACH ROW
+BEGIN
+
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
+  )
+  VALUES (
+  'Compra', 'INSERT',  CURRENT_USER(), NEW.id,
+  CONCAT ( 'id_Proveedor', NEW.id_Proveedor,'Fe_compra', NEW.Fe_compra)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_compra_update
+AFTER UPDATE ON Compra
+FOR EACH ROW
+BEGIN
+  -- Insertar en bitácora general
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
+  )
+  VALUES ('Compra', 'UPDATE',CURRENT_USER(), NEW.id_Proveedor,
+ CONCAT ( 'id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra),
+ CONCAT ( 'id_Proveedor', NEW.id_Proveedor, 'Fe_compra', NEW.Fe_compra)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg__delete_proveedor
+AFTER DELETE ON Proveedor
+FOR EACH ROW
+BEGIN
+  
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
+  VALUES ('Compra', 'DELETE',  CURRENT_USER(), OLD.id_Proveedor,
+ CONCAT ('id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra)
+ );
+END //
+DELIMITER ;
+
+-- Insertar Compra--
+INSERT INTO Compra (id_Proveedor, Fe_compra)
+VALUES (1,'24-09-17');
+
+-- Actualizar Compra --
+UPDATE Compra
+SET Fe_compra = '24-09-17'
+WHERE id_Proveedor = 1;
+
+-- Eliminar Compra
+DELETE FROM Compra 
+WHERE id_Proveedor = 1;
+
+-- DeatlleCompra --
+DELIMITER //
+CREATE TRIGGER trg_insert_compra
+AFTER INSERT ON Compra
+FOR EACH ROW
+BEGIN
+
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
+  )
+  VALUES (
+  'Compra', 'INSERT',  CURRENT_USER(), NEW.id,
+  CONCAT ( 'id_Proveedor', NEW.id_Proveedor,'Fe_compra', NEW.Fe_compra)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_compra_update
+AFTER UPDATE ON Compra
+FOR EACH ROW
+BEGIN
+  -- Insertar en bitácora general
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
+  )
+  VALUES ('Compra', 'UPDATE',CURRENT_USER(), NEW.id_Proveedor,
+ CONCAT ( 'id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra),
+ CONCAT ( 'id_Proveedor', NEW.id_Proveedor, 'Fe_compra', NEW.Fe_compra)
+  );
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg__delete_proveedor
+AFTER DELETE ON Proveedor
+FOR EACH ROW
+BEGIN
+  
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
+  VALUES ('Compra', 'DELETE',  CURRENT_USER(), OLD.id_Proveedor,
+ CONCAT ('id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra)
+ );
+END //
+DELIMITER ;
+
+-- Insertar Compra--
+INSERT INTO Compra (id_Proveedor, Fe_compra)
+VALUES (1,'24-09-17');
+
+-- Actualizar Compra --
+UPDATE Compra
+SET Fe_compra = '24-09-17'
+WHERE id_Proveedor = 1;
+
+-- Eliminar Compra
+DELETE FROM Compra 
+WHERE id_Proveedor = 1;
+
+-- Ventas --
+DELIMITER // 
+CREATE TRIGGER trg_insert_venta
+AFTER INSERT ON Venta
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_venta, valores_nuevos
+  )
+  VALUES (
+    'Venta', 'INSERT', CURRENT_USER(), NEW.id_ventas,
+    CONCAT('id_Cliente: ', NEW.id_Cliente, ', Fe_Venta: ', NEW.Fe_Venta)
+  );
+END //
+
+DELIMITER ;
+
+DELIMITER //
+CREATE TRIGGER trg_update_venta
+AFTER UPDATE ON Venta
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_venta,
+    valores_anteriores, valores_nuevos
+  )
+  VALUES (
+    'Venta', 'UPDATE', CURRENT_USER(), NEW.id_Ventas,
+      CONCAT('id_Cliente: ', old.id_Cliente, ', Fe_Venta: ', old.Fe_Venta),
+       CONCAT('id_Cliente: ', NEW.id_Cliente, ', Fe_Venta: ', NEW.Fe_Venta));
+END //
+DELIMITER ;
+
+DELIMITER // 
+CREATE TRIGGER trg_delete_venta
+AFTER DELETE ON Venta
+FOR EACH ROW
+BEGIN
+  INSERT INTO bitacora_general (
+    tabla_afectada, tipo_cambio, usuario, id_producto
+  )
+  VALUES (
+    'Venta', 'DELETE', CURRENT_USER(), OLD.id_Ventas,
+   CONCAT('id_Cliente: ', old.id_Cliente, ', Fe_Venta: ', old.Fe_Venta)
+  );
+END //
+DELIMITER ;
+
+INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (1, '2025-04-01 10:00:00');
+
+UPDATE Venta SET id_Cliente = '1', Fe_Venta = '2025-09-10 06:00:00'
+WHERE id_Ventas = 1;
+
+DELETE FROM Venta
+WHERE id_Ventas = 1;
+
+-- DetallesVentas---
+DELIMITER $$
+CREATE TRIGGER after_detalles_venta_insert
+AFTER INSERT ON Detalles_venta
+FOR EACH ROW
+BEGIN
+    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
+    VALUES ('Detalles_venta', 'INSERT', current_user());
+END$$
+DELIMITER ;
+
+
+
+DELIMITER $$
+CREATE TRIGGER after_detalles_venta_update
+AFTER UPDATE ON Detalles_venta
+FOR EACH ROW
+BEGIN
+    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
+    VALUES ('Detalles_venta', 'UPDATE', current_user());
+END$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE TRIGGER after_detalles_venta_delete
+AFTER DELETE ON Detalles_venta
+FOR EACH ROW
+BEGIN
+    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
+    VALUES ('Detalles_venta', 'DELETE', current_user());
+END$$
+DELIMITER ; 
+
