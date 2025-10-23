@@ -3,20 +3,19 @@ import { Router } from 'express';
 import { obtenerProveedores, obtenerProveedor, registrarProveedor, eliminarProveedor, actualizarProveedorPatch } from '../controllers/Proveedor.controller.js';
 
 const router = Router();
-// Rutas
-router.get('/Proveedores', obtenerProveedores);
+router.get('/proveedor', obtenerProveedores);
 
-// Rutas
-router.get('/Proveedores/:id_DetalleCompra', obtenerProveedor);
+router.get('/proveedor/:id_Proveedor', obtenerProveedor);
 
-// Rutas
+// Ruta para registrarProveedor una Proveedor 
 router.post('/registrarProveedor', registrarProveedor);
 
-//Rutas
+// Ruta para eliminarProveedor una Proveedor por su ID 
 router.delete('/eliminarProveedor/:id_Proveedor', eliminarProveedor);
 
-// Ruta para actualizar una Proveedor por su ID
+// Ruta para actualizar una Proveedor por su ID 
 router.patch('/actualizarProveedorPatch/:id_Proveedor', actualizarProveedorPatch);
+
 
 
 export default router;
