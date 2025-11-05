@@ -1,5 +1,5 @@
 -- Crear la base de datos y usarla
-CREATE DATABASE IF NOT EXISTS almacenrural;
+CREATE DATABASE almacenrural;
 USE almacenrural;
 
 -- Crear tablas
@@ -119,29 +119,29 @@ INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono
 ('María', 'Lopez', 'maria.lopez@correo.com', '123456789', '55545678', 'femenino', 'cajero'),
 ('Carlos', 'Ruiz', 'carlos.ruiz@correo.com', '123456789', '55556789', 'masculino', 'admin');
 
--- INSERT INTO Producto
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Dog Chow Adulto 15kg', 'Alimento', 25, 120000, 90000, '2025-12-31');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Cat Chow Gato 8kg', 'Alimento', 18, 85000, 60000, '2025-11-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Antipulgas Frontline', 'Medicamento', 30, 40000, 25000, '2026-06-30');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Shampoo Canino 500ml', 'Aseo', 50, 20000, 12000, '2026-01-15');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Juguete Hueso de Goma', 'Accesorio', 40, 15000, 8000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Arena para Gato 10kg', 'Aseo', 35, 30000, 18000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Vitaminas para Perro', 'Medicamento', 20, 25000, 15000, '2026-05-01');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Comedero Doble Acero', 'Accesorio', 45, 28000, 16000, NULL);
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Collar Antipulgas', 'Accesorio', 60, 22000, 12000, '2026-03-15');
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Pelota con sonido', 'Accesorio', 70, 10000, 6000, NULL);
+-- INSERT Producto --
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Dog Chow Adulto 15kg', 'Alimento', 25, 120000, 90000, '2025-12-31');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Cat Chow Gato 8kg', 'Alimento', 18, 85000, 60000, '2025-11-30');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Antipulgas Frontline', 'Medicamento', 30, 40000, 25000, '2026-06-30');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Shampoo Canino 500ml', 'Aseo', 50, 20000, 12000, '2026-01-15');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Juguete Hueso de Goma', 'Accesorio', 40, 15000, 8000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Arena para Gato 10kg', 'Aseo', 35, 30000, 18000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Vitaminas para Perro', 'Medicamento', 20, 25000, 15000, '2026-05-01');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Comedero Doble Acero', 'Accesorio', 45, 28000, 16000, NULL);
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Collar Antipulgas', 'Accesorio', 60, 22000, 12000, '2026-03-15');
+INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Pelota con sonido', 'Accesorio', 70, 10000, 6000, NULL);
 
--- INSERT INTO Proveedor
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuidora AnimalCare', '5823-6323', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Health S.A.', '8418-2003', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('CleanPet Co.', '5724-9865', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascotas Feliz Ltda', '3805-3806', 'Accesorios');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('SuperPet Import', '8855-7677', 'Variado');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Almacen Macota', '8744-4546', 'Accesorios de Baño');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('BioMascotas S.A.', '5272-5534', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Veterinaria Global', '6801-7605', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('PetCare Solutions', '7713-6453', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascota Sana', '66228-8756', 'Aseo');
+-- INSERT Proveedores --
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuidora AnimalCare', '30012345', 'Alimentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Health S.A.', '30123456', 'Medicamentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('CleanPet Co.', '30234567', 'Aseo');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascotas Feliz Ltda', '30345678', 'Accesorios');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('SuperPet Import', '30456789', 'Variado');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Almacen Macota', '30656789', 'Accesorios de Baño');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('BioMascotas S.A.', '30712345', 'Medicamentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Veterinaria Global', '30823456', 'Medicamentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('PetCare Solutions', '30934567', 'Alimentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascota Sana', '31045678', 'Aseo');
 
 -- INSERT INTO Compra
 INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (1, '2025-01-10');
