@@ -1,7 +1,10 @@
-Create database almacenrural;
-use almacenrural;
+-- Crear la base de datos y usarla
+CREATE DATABASE IF NOT EXISTS almacenrural;
+USE almacenrural;
 
--- Crear tabla Cliente --
+-- Crear tablas
+
+-- Tabla Cliente
 CREATE TABLE Cliente (
   id_Cliente INT AUTO_INCREMENT PRIMARY KEY,
   Nombre1 VARCHAR(30),
@@ -12,7 +15,7 @@ CREATE TABLE Cliente (
   Telefono VARCHAR(8)
 );
 
--- Crear tabla Usuarios --
+-- Tabla Usuarios
 CREATE TABLE Usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(20) NOT NULL,
@@ -24,26 +27,26 @@ CREATE TABLE Usuarios (
     rol ENUM('admin', 'cajero') DEFAULT 'cajero'
 );
 
--- Crear tabla Producto --
+-- Tabla Producto
 CREATE TABLE Producto (
   id_Producto INT AUTO_INCREMENT PRIMARY KEY,
   Nombre_Prod VARCHAR(30),
   Tipo_Prod VARCHAR(20),
-  Existencia_Prod decimal(6,2),
-  Precio_Costo decimal(10,2),
-  Precio_Venta Decimal(10,2),
+  Existencia_Prod DECIMAL(6,2),
+  Precio_Costo DECIMAL(10,2),
+  Precio_Venta DECIMAL(10,2),
   Fe_caducidad DATE
 );
 
--- Crear tabla Proveedor --
+-- Tabla Proveedor
 CREATE TABLE Proveedor (
   id_Proveedor INT AUTO_INCREMENT PRIMARY KEY,
   Nombre_Proveedor VARCHAR(30),
-  Telefono VARCHAR(8),
+  Telefono VARCHAR(20),
   Tipo_distribuidor VARCHAR(30)
 );
 
--- Crear tabla Compra --
+-- Tabla Compra
 CREATE TABLE Compra (
   id_compra INT AUTO_INCREMENT PRIMARY KEY,
   id_Proveedor INT,
@@ -51,7 +54,7 @@ CREATE TABLE Compra (
   FOREIGN KEY (id_Proveedor) REFERENCES Proveedor(id_Proveedor) ON DELETE CASCADE
 );
 
--- Crear tabla DetalleCompra
+-- Tabla DetalleCompra
 CREATE TABLE DetalleCompra (
   id_DetalleCompra INT AUTO_INCREMENT PRIMARY KEY,
   id_compra INT,
@@ -64,7 +67,7 @@ CREATE TABLE DetalleCompra (
   FOREIGN KEY (id_compra) REFERENCES Compra(id_compra) ON DELETE CASCADE
 );
 
--- Crear tabla Venta --
+-- Tabla Venta
 CREATE TABLE Venta (
   id_ventas INT AUTO_INCREMENT PRIMARY KEY,
   id_Cliente INT,
@@ -72,7 +75,7 @@ CREATE TABLE Venta (
   FOREIGN KEY (id_Cliente) REFERENCES Cliente(id_Cliente) ON DELETE CASCADE
 );
 
--- Crear tabla Detalles_venta --
+-- Tabla Detalles_venta
 CREATE TABLE Detalles_venta (
   id_DetalleVenta INT AUTO_INCREMENT PRIMARY KEY,
   id_Venta INT,
@@ -83,7 +86,7 @@ CREATE TABLE Detalles_venta (
   FOREIGN KEY (id_Venta) REFERENCES Venta(id_ventas) ON DELETE CASCADE
 );
 
--- Crear tabla bitacora_general --
+-- Tabla bitacora_general
 CREATE TABLE IF NOT EXISTS bitacora_general (
     id_bitacora INT AUTO_INCREMENT PRIMARY KEY,
     tabla_afectada VARCHAR(50) NOT NULL,
@@ -95,7 +98,9 @@ CREATE TABLE IF NOT EXISTS bitacora_general (
     fecha DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- INSERT INTO Cliente --
+-- Inserts en tablas
+
+-- INSERT INTO Cliente
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Carlos', 'Andrés', 'Pérez', 'Mendoza', 'Calle 10 #25-34', '31012345');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Laura', 'María', 'Gómez', 'Ríos', 'Carrera 15 #12-80', '31123456');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('David','Jose' , 'Ruiz', 'Cano', 'Av. Central 45-90', '31234567');
@@ -106,7 +111,7 @@ INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Andrés', 'Carlos', 'Martínez', 'Salas', 'Av. Sur #7-50', '31789012');
 INSERT INTO Cliente (Nombre1, Nombre2, Apellido1, Apellido2, Direccion, Telefono) VALUES ('Daniela', 'Camila', 'Castaño', 'Luna', 'Calle 5 #11-44', '31890123');
 
--- INSERT INTO Usuarios --
+-- INSERT INTO Usuarios
 INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono, genero, rol) VALUES
 ('Juan', 'Pérez', 'juan.perez@correo.com', '123456789', '55512345', 'masculino', 'cajero'),
 ('Ana', 'Gómez', 'ana.gomez@correo.com', '123456789', '55523456', 'femenino', 'admin'),
@@ -114,31 +119,31 @@ INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono
 ('María', 'Lopez', 'maria.lopez@correo.com', '123456789', '55545678', 'femenino', 'cajero'),
 ('Carlos', 'Ruiz', 'carlos.ruiz@correo.com', '123456789', '55556789', 'masculino', 'admin');
 
--- INSERT Producto --
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Dog Chow Adulto 15kg', 'Alimento', 25, 120000, 90000, '2025-12-31');
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Cat Chow Gato 8kg', 'Alimento', 18, 85000, 60000, '2025-11-30');
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Antipulgas Frontline', 'Medicamento', 30, 40000, 25000, '2026-06-30');
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Shampoo Canino 500ml', 'Aseo', 50, 20000, 12000, '2026-01-15');
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Juguete Hueso de Goma', 'Accesorio', 40, 15000, 8000, NULL);
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Arena para Gato 10kg', 'Aseo', 35, 30000, 18000, NULL);
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Vitaminas para Perro', 'Medicamento', 20, 25000, 15000, '2026-05-01');
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Comedero Doble Acero', 'Accesorio', 45, 28000, 16000, NULL);
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Collar Antipulgas', 'Accesorio', 60, 22000, 12000, '2026-03-15');
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Pelota con sonido', 'Accesorio', 70, 10000, 6000, NULL);
+-- INSERT INTO Producto
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Dog Chow Adulto 15kg', 'Alimento', 25, 120000, 90000, '2025-12-31');
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Cat Chow Gato 8kg', 'Alimento', 18, 85000, 60000, '2025-11-30');
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Antipulgas Frontline', 'Medicamento', 30, 40000, 25000, '2026-06-30');
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Shampoo Canino 500ml', 'Aseo', 50, 20000, 12000, '2026-01-15');
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Juguete Hueso de Goma', 'Accesorio', 40, 15000, 8000, NULL);
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Arena para Gato 10kg', 'Aseo', 35, 30000, 18000, NULL);
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Vitaminas para Perro', 'Medicamento', 20, 25000, 15000, '2026-05-01');
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Comedero Doble Acero', 'Accesorio', 45, 28000, 16000, NULL);
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Collar Antipulgas', 'Accesorio', 60, 22000, 12000, '2026-03-15');
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES ('Pelota con sonido', 'Accesorio', 70, 10000, 6000, NULL);
 
--- INSERT Proveedores --
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuidora AnimalCare', '30012345', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Health S.A.', '30123456', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('CleanPet Co.', '30234567', 'Aseo');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascotas Feliz Ltda', '30345678', 'Accesorios');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('SuperPet Import', '30456789', 'Variado');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Almacen Macota', '30656789', 'Accesorios de Baño');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('BioMascotas S.A.', '30712345', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Veterinaria Global', '30823456', 'Medicamentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('PetCare Solutions', '30934567', 'Alimentos');
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascota Sana', '31045678', 'Aseo');
+-- INSERT INTO Proveedor
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Distribuidora AnimalCare', '5823-6323', 'Alimentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Pet Health S.A.', '8418-2003', 'Medicamentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('CleanPet Co.', '5724-9865', 'Aseo');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascotas Feliz Ltda', '3805-3806', 'Accesorios');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('SuperPet Import', '8855-7677', 'Variado');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Almacen Macota', '8744-4546', 'Accesorios de Baño');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('BioMascotas S.A.', '5272-5534', 'Medicamentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Veterinaria Global', '6801-7605', 'Medicamentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('PetCare Solutions', '7713-6453', 'Alimentos');
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor) VALUES('Mascota Sana', '66228-8756', 'Aseo');
 
--- INSERT Compra --
+-- INSERT INTO Compra
 INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (1, '2025-01-10');
 INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (2, '2025-02-14');
 INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (3, '2025-03-20');
@@ -150,7 +155,7 @@ INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (8, '2025-02-20');
 INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (9, '2025-03-01');
 INSERT INTO Compra (id_Proveedor, Fe_compra) VALUES (10, '2025-04-10');
 
--- INSERT Detalle Compra --
+-- INSERT INTO DetalleCompra
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (1, 1, '2025-01-10', '2025-12-31', 900, 60);
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (2, 2, '2025-01-10', '2025-11-30', 6000, 50);
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (3, 3, '2025-02-14', '2026-06-30', 25000, 70);
@@ -162,7 +167,7 @@ INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, P
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (9, 9, '2025-04-20', '2025-12-31', 4500, 45);
 INSERT INTO DetalleCompra (id_compra, id_Producto, Fe_Ingresado, Fe_caducidad, Precio, Cantidad) VALUES (10, 10, '2025-04-25', NULL, 9800, 35);
 
--- INSERT INTO Venta --
+-- INSERT INTO Venta
 INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (1, '2025-04-01 10:00:00');
 INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (2, '2025-04-02 11:30:00');
 INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (3, '2025-04-03 09:45:00');
@@ -173,7 +178,7 @@ INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (7, '2025-04-07 12:00:00');
 INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (8, '2025-04-08 16:45:00');
 INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (9, '2025-04-09 10:30:00');
 
--- INSERT Detalle Venta --
+-- INSERT INTO Detalles_venta
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (1, 2, 15000, 1);
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (2, 4, 18000, 2);
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (3, 1, 12000, 1);
@@ -184,8 +189,8 @@ INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Product
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (8, 2, 15000, 2);
 INSERT INTO Detalles_venta(id_Venta, id_Producto, Precio_venta, Cantidad_Producto) VALUES (9, 3, 18000, 1);
 
+-- Procedimientos almacenados
 
--- Procedimiento almacenado --
 DELIMITER //
 CREATE PROCEDURE agregar_cliente(
   IN p_Nombre1 VARCHAR(30),
@@ -246,15 +251,15 @@ DELIMITER ;
 DELIMITER //
 CREATE PROCEDURE agregar_producto(
   IN p_Nombre_Prod VARCHAR(30),
-  IN p_Num VARCHAR(20),
+  IN p_Tipo_Prod VARCHAR(20),
   IN p_Existencia_Prod DECIMAL(6,2),
   IN p_Precio_Venta DECIMAL(10,2),
   IN p_Precio_Costo DECIMAL(10,2),
   IN p_Fe_caducidad DATE
 )
 BEGIN
-  INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad)
-  VALUES (p_Nombre_Prod, p_Num, p_Existencia_Prod, p_Precio_Venta, p_Precio_Costo, p_Fe_caducidad);
+  INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad)
+  VALUES (p_Nombre_Prod, p_Tipo_Prod, p_Existencia_Prod, p_Precio_Venta, p_Precio_Costo, p_Fe_caducidad);
 END //
 DELIMITER ;
 
@@ -270,7 +275,7 @@ CREATE PROCEDURE obtener_producto_por_id(
   IN p_id_producto INT
 )
 BEGIN
-  SELECT Nombre_Prod, Num, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad
+  SELECT Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Venta, Precio_Costo, Fe_caducidad
   FROM Producto
   WHERE id_Producto = p_id_producto;
 END //
@@ -304,7 +309,7 @@ END //
 DELIMITER ;
 
 DELIMITER //
-CREATE PROCEDURE agregar_proveedor(
+CREATE PROCEDURE agregar_proveedores(
   IN p_Nombre_Proveedor VARCHAR(30),
   IN p_Telefono VARCHAR(8),
   IN p_Tipo_distribuidor VARCHAR(30)
@@ -417,8 +422,8 @@ CREATE PROCEDURE agregar_detalle_compra(
   IN p_Valor_Compra INT
 )
 BEGIN
-  INSERT INTO DetalleCompra (id_Producto, id_compra, Fe_Ingresado, Fe_caducidad, Valor_Compra)
-  VALUES (p_id_producto, p_id_compra, p_Fe_Ingresado, p_Fe_caducidad, p_Valor_Compra);
+  INSERT INTO DetalleCompra (id_Producto, id_compra, Fe_Ingresado, Fe_caducidad, Precio, cantidad)
+  VALUES (p_id_producto, p_id_compra, p_Fe_Ingresado, p_Fe_caducidad, p_Valor_Compra, NULL); -- Ajustado para coincidir con tabla
 END //
 DELIMITER ;
 
@@ -434,14 +439,14 @@ CREATE PROCEDURE obtener_detalle_compra_por_id(
   IN p_id_detallecompra INT
 )
 BEGIN
-  SELECT id_Producto, id_compra, Fe_Ingresado, Fe_caducidad, Valor_Compra
+  SELECT id_Producto, id_compra, Fe_Ingresado, Fe_caducidad, Precio, cantidad
   FROM DetalleCompra
-WHERE id_Producto = p_id_producto;
-  SELECT total_valor AS Valor_Total_Compra;
+  WHERE id_DetalleCompra = p_id_detallecompra;
 END //
 DELIMITER ;
 
--- vista --
+-- Vistas
+
 CREATE VIEW Vista_Producto_Menos_Vendido AS
 SELECT 
     p.Nombre_Prod AS Producto,
@@ -485,7 +490,6 @@ SELECT
 FROM Cliente c
 LEFT JOIN Venta v ON c.id_Cliente = v.id_Cliente
 WHERE v.id_ventas IS NULL;
-   
 
 CREATE VIEW Vista_Productos_Mas_Vendidos AS
 SELECT 
@@ -537,7 +541,6 @@ JOIN Producto p ON dc.id_Producto = p.id_Producto
 GROUP BY prov.id_Proveedor
 ORDER BY Total_Productos DESC;
 
-
 CREATE VIEW Vista_Proveedores_Completos AS
 SELECT 
     prov.Nombre_Proveedor, 
@@ -561,7 +564,6 @@ JOIN Compra c ON prov.id_Proveedor = c.id_Proveedor
 JOIN DetalleCompra dc ON c.id_compra = dc.id_compra
 JOIN Producto p ON dc.id_Producto = p.id_Producto;
 
-
 CREATE VIEW Vista_Compras_Rango_Fechas AS
 SELECT 
     c.id_compra, 
@@ -570,7 +572,6 @@ SELECT
 FROM Compra c
 JOIN Proveedor prov ON c.id_Proveedor = prov.id_Proveedor
 WHERE c.Fe_compra BETWEEN '2023-01-01' AND '2023-12-31';
-
 
 CREATE VIEW Vista_Compras_Sin_Ventas AS
 SELECT 
@@ -583,6 +584,8 @@ JOIN DetalleCompra dc ON c.id_compra = dc.id_compra
 JOIN Producto p ON dc.id_Producto = p.id_Producto
 LEFT JOIN Detalles_venta dv ON p.id_Producto = dv.id_Producto
 WHERE dv.id_DetalleVenta IS NULL;
+
+-- Funciones
 
 DELIMITER // 
 CREATE FUNCTION obtener_stock_producto(p_id_Producto INT)
@@ -599,9 +602,6 @@ BEGIN
 END //
 DELIMITER ;
 
-SELECT obtener_stock_producto(1);
-
-
 DELIMITER //
 CREATE FUNCTION ganancia_unidad(p_id_Producto INT)
 RETURNS DECIMAL(10,2)
@@ -616,8 +616,6 @@ BEGIN
   RETURN ganancia;
 END //
 DELIMITER ;
-
-SELECT ganancia_unidad(1);
 
 DELIMITER //
 CREATE FUNCTION productos_caducados()
@@ -634,8 +632,6 @@ BEGIN
 END //
 DELIMITER ;
 
-SELECT productos_caducados();
-
 DELIMITER //
 CREATE FUNCTION total_ventas_cliente(p_id_Cliente INT)
 RETURNS INT
@@ -650,7 +646,6 @@ BEGIN
   RETURN total;
 END //
 DELIMITER ;
-SELECT total_ventas_cliente(2);
 
 DELIMITER //
 CREATE FUNCTION total_vendido_producto(p_id_Producto INT)
@@ -667,45 +662,52 @@ BEGIN
 END //
 DELIMITER ;
 
-SELECT total_vendido_producto(1);
+-- Roles
 
+CREATE ROLE 'admin72';
+CREATE ROLE 'cajero9';
+CREATE ROLE 'cajero0';
+CREATE ROLE 'lector';
 
--- Usuario y PRIVILEGES--
- Create USER IF NOT EXISTS 'welvin'@'localhost' IDENTIFIED BY 'welvin123';
+-- Asignar permisos a roles (corregido y simplificado)
+GRANT ALL PRIVILEGES ON almacenrural.Venta TO 'admin72';
+GRANT SELECT, INSERT, UPDATE ON almacenrural.Venta TO 'cajero9';
+
+-- Usuarios y privilegios
+
+CREATE USER IF NOT EXISTS 'welvin'@'localhost' IDENTIFIED BY 'welvin123';
 GRANT SELECT ON almacenrural.* TO 'welvin'@'localhost';
 
-Create USER IF NOT EXISTS 'Stiven'@'localhost' IDENTIFIED BY '12345';
+CREATE USER IF NOT EXISTS 'Stiven'@'localhost' IDENTIFIED BY '12345';
 GRANT ALL PRIVILEGES ON almacenrural.* TO 'Stiven'@'localhost';
 
-Create USER IF NOT EXISTS 'Azter'@'localhost' IDENTIFIED BY 'Cli231';
+CREATE USER IF NOT EXISTS 'Azter'@'localhost' IDENTIFIED BY 'Cli231';
 GRANT INSERT, UPDATE ON almacenrural.Cliente TO 'Azter'@'localhost';
+
 FLUSH PRIVILEGES;
 
+-- Asignar roles a usuarios (corregido)
+GRANT 'admin72' TO 'Stiven'@'localhost';
+GRANT 'cajero9' TO 'Azter'@'localhost';
+GRANT 'lector' TO 'welvin'@'localhost';
 
-SHOW GRANTS FOR 'welvin'@'localhost';
-SHOW GRANTS FOR 'Stiven'@'localhost';
-SHOW GRANTS FOR 'Azter'@'localhost';
+FLUSH PRIVILEGES;
 
-  -- modificar CONTRASEÑA --
-
+-- Modificar contraseña
 ALTER USER 'welvin'@'localhost' IDENTIFIED BY 'nuevaClave456';
 
--- revoke los privilegio --
-
+-- Revoke privilegios
 REVOKE SELECT ON almacenrural.* FROM 'welvin'@'localhost';
 
--- ELIMINAR USUARIO
+-- Eliminar usuario
 DROP USER 'welvin'@'localhost';
 
--- Verificar privilegios
-SHOW GRANTS FOR 'editor1'@'localhost';
-SHOW GRANTS FOR 'lector2'@'localhost';
-SHOW GRANTS FOR 'gestor'@'localhost';
+-- Eventos
 
 DELIMITER $$
 CREATE EVENT cierre_compra_automatico
 ON SCHEDULE EVERY 1 DAY
-STARTS TIMESTAMP(CURRENT_DATE, '23:59:00')  -- se ejecuta a las 11:59 PM
+STARTS TIMESTAMP(CURRENT_DATE, '23:59:00')
 DO
 BEGIN
     UPDATE Compra c
@@ -716,91 +718,74 @@ BEGIN
     )
     WHERE DATE(c.Fe_compra) = CURRENT_DATE;
 END$$
-
 DELIMITER ;
 
 DELIMITER $$
-
 CREATE EVENT cierre_venta_automatico
 ON SCHEDULE EVERY 1 DAY
-STARTS TIMESTAMP(CURRENT_DATE, '23:59:00') -- se ejecuta a las 11:59 PM
+STARTS TIMESTAMP(CURRENT_DATE, '23:59:00')
 DO
 BEGIN
     UPDATE Venta v
     SET v.total_venta = (
         SELECT IFNULL(SUM(dv.Precio_venta * dv.Cantidad_Producto), 0)
-        FROM DetalleVenta dv
+        FROM Detalles_venta dv
         WHERE dv.id_Venta = v.id_ventas
     )
     WHERE DATE(v.Fe_Venta) = CURRENT_DATE;
 END$$
-
 DELIMITER ;
 
--- TIGGER PARA LA BITACORA --
--- Trigger Insert Cliente--
-Delimiter //
+-- Triggers (corregidos y organizados)
+
+-- Triggers para Cliente
+DELIMITER //
 CREATE TRIGGER trg_insert_cliente
-AFTER INSERT ON cliente
+AFTER INSERT ON Cliente
 FOR EACH ROW
 BEGIN
-    INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos
-    )
-     VALUES ( 'Cliente', 'INSERT', CURRENT_USER(), NEW.id_cliente,
-     CONCAT('Nombre1: ', NEW.Nombre1, ', Nombre2: ', NEW.Nombre2, ', Apellido1: ', NEW.Apellido1, ', Apellido2: ', NEW.Apellido2, ', Direccion: ', NEW.Direccion, ', Telefono: ', NEW.Telefono)
-     );
-     END //
-     DELIMITER ;
-     
-     DELIMITER //
+    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+    VALUES ('Cliente', 'INSERT', CURRENT_USER(), NEW.id_Cliente,
+     CONCAT('Nombre1: ', NEW.Nombre1, ', Nombre2: ', NEW.Nombre2, ', Apellido1: ', NEW.Apellido1, 
+     ', Apellido2: ', NEW.Apellido2, ', Direccion: ', NEW.Direccion, ', Telefono: ', NEW.Telefono));
+END //
+DELIMITER ;
+
+DELIMITER //
 CREATE TRIGGER trg_update_cliente
-AFTER UPDATE ON cliente
+AFTER UPDATE ON Cliente
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_cliente,
-    valores_anteriores, valores_nuevos
-  )
-  VALUES (
-    'Producto', 'UPDATE', CURRENT_USER(), NEW.id_cliente,
-    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Aoellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono),
-    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Aoellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono));
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Cliente', 'UPDATE', CURRENT_USER(), NEW.id_Cliente,
+    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Apellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono),
+    CONCAT('Nombre1: ', NEW.Nombre1, ', Nombre2: ', NEW.Nombre2, ', Apellido1: ', NEW.Apellido1, ', Apellido2: ', NEW.Apellido2, ', Direccion: ', NEW.Direccion, ', Telefono: ', NEW.Telefono));
 END //
 DELIMITER ;
 
-DELIMITER // 
+DELIMITER //
 CREATE TRIGGER trg_delete_cliente
-AFTER DELETE ON cliente
+AFTER DELETE ON Cliente
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores
-  )
-  VALUES (
-    'Producto', 'DELETE', CURRENT_USER(), OLD.id_cliente,
-    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, ', Aoellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Cliente', 'DELETE', CURRENT_USER(), OLD.id_Cliente,
+    CONCAT('Nombre1: ', OLD.Nombre1, ', Nombre2: ', OLD.Nombre2, 
+           ', Apellido1: ', OLD.Apellido1, ', Apellido2: ', OLD.Apellido2, 
+           ', Direccion: ', OLD.Direccion, ', Telefono: ', OLD.Telefono));
 END //
 DELIMITER ;
 
-
--- Producto ---
--- Trigger para INSERT Producto ---
+-- Triggers para Producto
 DELIMITER // 
 CREATE TRIGGER trg_insert_producto
 AFTER INSERT ON Producto
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto, valores_nuevos
-  )
-  VALUES (
-    'Producto', 'INSERT', CURRENT_USER(), NEW.id_Producto,
-    CONCAT('Nombre_Prod: ', NEW.Nombre_Prod, ', Num: ', NEW.Num, ', Existencia_Prod: ', NEW.Existencia_Prod, ', Precio_Costo: ', NEW.Precio_Costo, ', Precio_Venta: ', NEW.Precio_Venta, ', Fe_caducidad: ', NEW.Fe_caducidad)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('Producto', 'INSERT', CURRENT_USER(), NEW.id_Producto,
+    CONCAT('Nombre_Prod: ', NEW.Nombre_Prod, ', Tipo_Prod: ', NEW.Tipo_Prod, ', Existencia_Prod: ', NEW.Existencia_Prod, ', Precio_Costo: ', NEW.Precio_Costo, ', Precio_Venta: ', NEW.Precio_Venta, ', Fe_caducidad: ', NEW.Fe_caducidad));
 END //
-
 DELIMITER ;
 
 DELIMITER //
@@ -808,55 +793,36 @@ CREATE TRIGGER trg_update_producto
 AFTER UPDATE ON Producto
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto,
-    valores_anteriores, valores_nuevos
-  )
-  VALUES (
-    'Producto', 'UPDATE', CURRENT_USER(), NEW.id_Producto,
-    CONCAT('Nombre_Prod: ', OLD.Nombre_Prod, ', Num: ', OLD.Num, ', Existencia_Prod: ', OLD.Existencia_Prod, ', Precio_Costo: ', OLD.Precio_Costo, ', Precio_Venta: ', OLD.Precio_Venta, ', Fe_caducidad: ', OLD.Fe_caducidad),
-    CONCAT('Nombre_Prod: ', NEW.Nombre_Prod, ', Num: ', NEW.Num, ', Existencia_Prod: ', NEW.Existencia_Prod, ', Precio_Costo: ', NEW.Precio_Costo, ', Precio_Venta: ', NEW.Precio_Venta, ', Fe_caducidad: ', NEW.Fe_caducidad));
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Producto', 'UPDATE', CURRENT_USER(), NEW.id_Producto,
+    CONCAT('Nombre_Prod: ', OLD.Nombre_Prod, ', Tipo_Prod: ', OLD.Tipo_Prod, ', Existencia_Prod: ', OLD.Existencia_Prod, ', Precio_Costo: ', OLD.Precio_Costo, ', Precio_Venta: ', OLD.Precio_Venta, ', Fe_caducidad: ', OLD.Fe_caducidad),
+    CONCAT('Nombre_Prod: ', NEW.Nombre_Prod, ', Tipo_Prod: ', NEW.Tipo_Prod, ', Existencia_Prod: ', NEW.Existencia_Prod, ', Precio_Costo: ', NEW.Precio_Costo, ', Precio_Venta: ', NEW.Precio_Venta, ', Fe_caducidad: ', NEW.Fe_caducidad));
 END //
 DELIMITER ;
 
-DELIMITER // 
+DELIMITER //
 CREATE TRIGGER trg_delete_producto
 AFTER DELETE ON Producto
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto, valores_anteriores
-  )
-  VALUES (
-    'Producto', 'DELETE', CURRENT_USER(), OLD.id_Producto,
-    CONCAT('Nombre_Prod: ', OLD.Nombre_Prod, ', Num: ', OLD.Num, ', Existencia_Prod: ', OLD.Existencia_Prod, ', Precio_Costo: ', OLD.Precio_Costo, ', Precio_Venta: ', OLD.Precio_Venta, ', Fe_caducidad: ', OLD.Fe_caducidad)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Producto', 'DELETE', CURRENT_USER(), OLD.id_Producto,
+    CONCAT('Nombre_Prod: ', OLD.Nombre_Prod, ', Tipo_Prod: ', OLD.Tipo_Prod,
+           ', Existencia_Prod: ', OLD.Existencia_Prod, ', Precio_Costo: ', OLD.Precio_Costo,
+           ', Precio_Venta: ', OLD.Precio_Venta, ', Fe_caducidad: ', OLD.Fe_caducidad));
 END //
 DELIMITER ;
 
-INSERT INTO Producto (Nombre_Prod, Num, Existencia_Prod, Precio_Costo, Precio_Venta , Fe_caducidad) VALUES ('Señillas alimenticias', 'Alimento', 25, 120000, 90000, '2027-10-20');
-
-UPDATE Producto SET Nombre_Prod = 'aveyanas', Num = 'alimentos', Existencia_Prod = 150.00, Precio_Costo = 25.50, Precio_Venta = 40.00, Fe_caducidad = '2025-12-31'
-WHERE id_Producto = 1;
-
-DELETE FROM Producto
-WHERE id_Producto = 1;
-
--- Usuario--
+-- Triggers para Usuarios
 DELIMITER //
 CREATE TRIGGER trg_insert_usuarios
 AFTER INSERT ON Usuarios
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto, valores_nuevos
-  )
-  VALUES (
-    'Usuarios', 'INSERT', CURRENT_USER(), NEW.id,
-    CONCAT('nombre: ', NEW.nombre, ', apellido: ', NEW.apellido, ', correo: ', NEW.correo_electronico, ', telefono: ', NEW.telefono, ', genero: ', NEW.genero, ', rol: ', NEW.rol)
-  );
-END//
-
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('Usuarios', 'INSERT', CURRENT_USER(), NEW.id,
+    CONCAT('nombre: ', NEW.nombre, ', apellido: ', NEW.apellido, ', correo_electronico: ', NEW.correo_electronico, ', telefono: ', NEW.telefono, ', genero: ', NEW.genero, ', rol: ', NEW.rol));
+END //
 DELIMITER ;
 
 DELIMITER //
@@ -864,14 +830,10 @@ CREATE TRIGGER trg_update_usuarios
 AFTER UPDATE ON Usuarios
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto, valores_anteriores, valores_nuevos
-  )
-  VALUES (
-    'Usuarios', 'UPDATE', CURRENT_USER(), NEW.id,
-    CONCAT('nombre: ', OLD.nombre, ', apellido: ', OLD.apellido, ', correo: ', OLD.correo_electronico, ', telefono: ', OLD.telefono, ', genero: ', OLD.genero, ', rol: ', OLD.rol),
-    CONCAT('nombre: ', NEW.nombre, ', apellido: ', NEW.apellido, ', correo: ', NEW.correo_electronico, ', telefono: ', NEW.telefono, ', genero: ', NEW.genero, ', rol: ', NEW.rol)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Usuarios', 'UPDATE', CURRENT_USER(), NEW.id,
+    CONCAT('nombre: ', OLD.nombre, ', apellido: ', OLD.apellido, ', correo_electronico: ', OLD.correo_electronico, ', telefono: ', OLD.telefono, ', genero: ', OLD.genero, ', rol: ', OLD.rol),
+    CONCAT('nombre: ', NEW.nombre, ', apellido: ', NEW.apellido, ', correo_electronico: ', NEW.correo_electronico, ', telefono: ', NEW.telefono, ', genero: ', NEW.genero, ', rol: ', NEW.rol));
 END //
 DELIMITER ;
 
@@ -880,215 +842,130 @@ CREATE TRIGGER trg_delete_usuarios
 AFTER DELETE ON Usuarios
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto, valores_anteriores
-  )
-  VALUES (
-    'Usuarios', 'DELETE', CURRENT_USER(), OLD.id,
-    CONCAT('nombre: ', OLD.nombre, ', apellido: ', OLD.apellido, ', correo: ', OLD.correo_electronico, ', telefono: ', OLD.telefono, ', genero: ', OLD.genero, ', rol: ', OLD.rol)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Usuarios', 'DELETE', CURRENT_USER(), OLD.id,
+    CONCAT('nombre: ', OLD.nombre, ', apellido: ', OLD.apellido,
+           ', correo_electronico: ', OLD.correo_electronico, ', telefono: ', OLD.telefono,
+           ', genero: ', OLD.genero, ', rol: ', OLD.rol));
 END //
-
 DELIMITER ;
 
-INSERT INTO Usuarios (nombre, apellido, correo_electronico, contrasena, telefono, genero, rol)
-VALUES ('Carlos', 'Ramírez', 'carlos.ramirez@example.com', 'clave123', '88887777', 'masculino', 'admin');
-
-UPDATE Usuarios
-SET telefono = '77778888', rol = 'cajero'
-WHERE id = 1;
-
-DELETE FROM Usuarios
-WHERE id = 1;
-
--- Proveedor ---
-
+-- Triggers para Proveedor
 DELIMITER //
 CREATE TRIGGER trg_insert_proveedor
 AFTER INSERT ON Proveedor
 FOR EACH ROW
 BEGIN
- 
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
-  )
-  VALUES (
-  'Proveedor', 'INSERT',  CURRENT_USER(), NEW.id,
-  CONCAT ( 'id_Proveedor', NEW.id_Proveedor,'Nombre_Proveedor', NEW.Nombre_Proveedor, 'Telefono', NEW.Telefono, 'Tipo_distribuidor', NEW.Tipo_distribuidor)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('Proveedor', 'INSERT', CURRENT_USER(), NEW.id_Proveedor,
+    CONCAT('Nombre_Proveedor: ', NEW.Nombre_Proveedor, ', Telefono: ', NEW.Telefono, ', Tipo_distribuidor: ', NEW.Tipo_distribuidor));
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trg_proveedor_update
+CREATE TRIGGER trg_update_proveedor
 AFTER UPDATE ON Proveedor
 FOR EACH ROW
 BEGIN
-  -- Insertar en bitácora general
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
-  )
-  VALUES ('Proveedor', 'UPDATE',CURRENT_USER(), NEW.id_Proveedor,
- CONCAT ( 'Nombre_Proveedor', OLD.Nombre_Proveedor, 'Telefono', OLD.Telefono, 'Tipo_distribuidor', OLD.Tipo_distribuidor),
- CONCAT ( 'Nombre_Proveedor', NEW.Nombre_Proveedor, 'Telefono', NEW.Telefono, 'Tipo_distribuidor', NEW.Tipo_distribuidor)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Proveedor', 'UPDATE', CURRENT_USER(), NEW.id_Proveedor,
+    CONCAT('Nombre_Proveedor: ', OLD.Nombre_Proveedor, ', Telefono: ', OLD.Telefono, ', Tipo_distribuidor: ', OLD.Tipo_distribuidor),
+    CONCAT('Nombre_Proveedor: ', NEW.Nombre_Proveedor, ', Telefono: ', NEW.Telefono, ', Tipo_distribuidor: ', NEW.Tipo_distribuidor));
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trg__delete_proveedor
+CREATE TRIGGER trg_delete_proveedor
 AFTER DELETE ON Proveedor
 FOR EACH ROW
 BEGIN
-  
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
-  VALUES ('Proveedor', 'DELETE',  CURRENT_USER(), OLD.id_Proveedor,
- CONCAT ('Nombre_Proveedor', OLD.Nombre_Proveedor, 'Telefono', OLD.Telefono, 'Tipo_distribuidor', OLD.Tipo_distribuidor)
- );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Proveedor', 'DELETE', CURRENT_USER(), OLD.id_Proveedor,
+    CONCAT('Nombre_Proveedor: ', OLD.Nombre_Proveedor, ', Telefono: ', OLD.Telefono,
+           ', Tipo_distribuidor: ', OLD.Tipo_distribuidor));
 END //
 DELIMITER ;
 
--- Insertar proveedor--
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor)
-VALUES ('Distribuidora X', '80012345', 'Alimentos');
-
--- Actualizar proveedor --
-UPDATE Proveedor
-SET Telefono = '88889999'
-WHERE id_Proveedor = 1;
-
--- Eliminar proveedor
-DELETE FROM Proveedor 
-WHERE id_Proveedor = 1;
-
--- Compra --
-
+-- Triggers para Compra
 DELIMITER //
 CREATE TRIGGER trg_insert_compra
 AFTER INSERT ON Compra
 FOR EACH ROW
 BEGIN
-
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
-  )
-  VALUES (
-  'Compra', 'INSERT',  CURRENT_USER(), NEW.id,
-  CONCAT ( 'id_Proveedor', NEW.id_Proveedor,'Fe_compra', NEW.Fe_compra)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('Compra', 'INSERT', CURRENT_USER(), NEW.id_compra,
+    CONCAT('id_Proveedor: ', NEW.id_Proveedor, ', Fe_compra: ', NEW.Fe_compra));
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trg_compra_update
+CREATE TRIGGER trg_update_compra
 AFTER UPDATE ON Compra
 FOR EACH ROW
 BEGIN
-  -- Insertar en bitácora general
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
-  )
-  VALUES ('Compra', 'UPDATE',CURRENT_USER(), NEW.id_Proveedor,
- CONCAT ( 'id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra),
- CONCAT ( 'id_Proveedor', NEW.id_Proveedor, 'Fe_compra', NEW.Fe_compra)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Compra', 'UPDATE', CURRENT_USER(), NEW.id_compra,
+    CONCAT('id_Proveedor: ', OLD.id_Proveedor, ', Fe_compra: ', OLD.Fe_compra),
+    CONCAT('id_Proveedor: ', NEW.id_Proveedor, ', Fe_compra: ', NEW.Fe_compra));
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trg__delete_proveedor
-AFTER DELETE ON Proveedor
+CREATE TRIGGER trg_delete_compra
+AFTER DELETE ON Compra
 FOR EACH ROW
 BEGIN
-  
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
-  VALUES ('Compra', 'DELETE',  CURRENT_USER(), OLD.id_Proveedor,
- CONCAT ('id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra)
- );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Compra', 'DELETE', CURRENT_USER(), OLD.id_compra,
+    CONCAT('id_Proveedor: ', OLD.id_Proveedor, ', Fe_compra: ', OLD.Fe_compra));
 END //
 DELIMITER ;
 
--- Insertar Compra--
-INSERT INTO Compra (id_Proveedor, Fe_compra)
-VALUES (1,'24-09-17');
-
--- Actualizar Compra --
-UPDATE Compra
-SET Fe_compra = '24-09-17'
-WHERE id_Proveedor = 1;
-
--- Eliminar Compra
-DELETE FROM Compra 
-WHERE id_Proveedor = 1;
-
--- DeatlleCompra --
+-- Triggers para DetalleCompra (corregido basado en patrón)
 DELIMITER //
-CREATE TRIGGER trg_insert_compra
-AFTER INSERT ON Compra
+CREATE TRIGGER trg_insert_detallecompra
+AFTER INSERT ON DetalleCompra
 FOR EACH ROW
 BEGIN
-
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
-  )
-  VALUES (
-  'Compra', 'INSERT',  CURRENT_USER(), NEW.id,
-  CONCAT ( 'id_Proveedor', NEW.id_Proveedor,'Fe_compra', NEW.Fe_compra)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('DetalleCompra', 'INSERT', CURRENT_USER(), NEW.id_DetalleCompra,
+    CONCAT('id_compra: ', NEW.id_compra, ', id_Producto: ', NEW.id_Producto, ', Fe_Ingresado: ', NEW.Fe_Ingresado, ', Fe_caducidad: ', NEW.Fe_caducidad, ', Precio: ', NEW.Precio, ', cantidad: ', NEW.cantidad));
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trg_compra_update
-AFTER UPDATE ON Compra
+CREATE TRIGGER trg_update_detallecompra
+AFTER UPDATE ON DetalleCompra
 FOR EACH ROW
 BEGIN
-  -- Insertar en bitácora general
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, proveedor
-  )
-  VALUES ('Compra', 'UPDATE',CURRENT_USER(), NEW.id_Proveedor,
- CONCAT ( 'id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra),
- CONCAT ( 'id_Proveedor', NEW.id_Proveedor, 'Fe_compra', NEW.Fe_compra)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('DetalleCompra', 'UPDATE', CURRENT_USER(), NEW.id_DetalleCompra,
+    CONCAT('id_compra: ', OLD.id_compra, ', id_Producto: ', OLD.id_Producto, ', Fe_Ingresado: ', OLD.Fe_Ingresado, ', Fe_caducidad: ', OLD.Fe_caducidad, ', Precio: ', OLD.Precio, ', cantidad: ', OLD.cantidad),
+    CONCAT('id_compra: ', NEW.id_compra, ', id_Producto: ', NEW.id_Producto, ', Fe_Ingresado: ', NEW.Fe_Ingresado, ', Fe_caducidad: ', NEW.Fe_caducidad, ', Precio: ', NEW.Precio, ', cantidad: ', NEW.cantidad));
 END //
 DELIMITER ;
 
 DELIMITER //
-CREATE TRIGGER trg__delete_proveedor
-AFTER DELETE ON Proveedor
+CREATE TRIGGER trg_delete_detallecompra
+AFTER DELETE ON DetalleCompra
 FOR EACH ROW
 BEGIN
-  
-  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
-  VALUES ('Compra', 'DELETE',  CURRENT_USER(), OLD.id_Proveedor,
- CONCAT ('id_Proveedor', OLD.id_Proveedor, 'Fe_compra', OLD.Fe_compra)
- );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('DetalleCompra', 'DELETE', CURRENT_USER(), OLD.id_DetalleCompra,
+    CONCAT('id_compra: ', OLD.id_compra, ', id_Producto: ', OLD.id_Producto, ', Fe_Ingresado: ', OLD.Fe_Ingresado, ', Fe_caducidad: ', OLD.Fe_caducidad, ', Precio: ', OLD.Precio, ', cantidad: ', OLD.cantidad));
 END //
 DELIMITER ;
 
--- Insertar Compra--
-INSERT INTO Compra (id_Proveedor, Fe_compra)
-VALUES (1,'24-09-17');
-
--- Actualizar Compra --
-UPDATE Compra
-SET Fe_compra = '24-09-17'
-WHERE id_Proveedor = 1;
-
--- Eliminar Compra
-DELETE FROM Compra 
-WHERE id_Proveedor = 1;
-
--- Ventas --
+-- Triggers para Venta
 DELIMITER // 
 CREATE TRIGGER trg_insert_venta
 AFTER INSERT ON Venta
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_venta, valores_nuevos
-  )
-  VALUES (
-    'Venta', 'INSERT', CURRENT_USER(), NEW.id_ventas,
-    CONCAT('id_Cliente: ', NEW.id_Cliente, ', Fe_Venta: ', NEW.Fe_Venta)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('Venta', 'INSERT', CURRENT_USER(), NEW.id_ventas,
+    CONCAT('id_Cliente: ', NEW.id_Cliente, ', Fe_Venta: ', NEW.Fe_Venta));
 END //
-
 DELIMITER ;
 
 DELIMITER //
@@ -1096,14 +973,10 @@ CREATE TRIGGER trg_update_venta
 AFTER UPDATE ON Venta
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_venta,
-    valores_anteriores, valores_nuevos
-  )
-  VALUES (
-    'Venta', 'UPDATE', CURRENT_USER(), NEW.id_Ventas,
-      CONCAT('id_Cliente: ', old.id_Cliente, ', Fe_Venta: ', old.Fe_Venta),
-       CONCAT('id_Cliente: ', NEW.id_Cliente, ', Fe_Venta: ', NEW.Fe_Venta));
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Venta', 'UPDATE', CURRENT_USER(), NEW.id_ventas,
+    CONCAT('id_Cliente: ', OLD.id_Cliente, ', Fe_Venta: ', OLD.Fe_Venta),
+    CONCAT('id_Cliente: ', NEW.id_Cliente, ', Fe_Venta: ', NEW.Fe_Venta));
 END //
 DELIMITER ;
 
@@ -1112,55 +985,43 @@ CREATE TRIGGER trg_delete_venta
 AFTER DELETE ON Venta
 FOR EACH ROW
 BEGIN
-  INSERT INTO bitacora_general (
-    tabla_afectada, tipo_cambio, usuario, id_producto
-  )
-  VALUES (
-    'Venta', 'DELETE', CURRENT_USER(), OLD.id_Ventas,
-   CONCAT('id_Cliente: ', old.id_Cliente, ', Fe_Venta: ', old.Fe_Venta)
-  );
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Venta', 'DELETE', CURRENT_USER(), OLD.id_ventas,
+    CONCAT('id_Cliente: ', OLD.id_Cliente, ', Fe_Venta: ', OLD.Fe_Venta));
 END //
 DELIMITER ;
 
-INSERT INTO Venta (id_Cliente, Fe_Venta) VALUES (1, '2025-04-01 10:00:00');
-
-UPDATE Venta SET id_Cliente = '1', Fe_Venta = '2025-09-10 06:00:00'
-WHERE id_Ventas = 1;
-
-DELETE FROM Venta
-WHERE id_Ventas = 1;
-
--- DetallesVentas---
-DELIMITER $$
-CREATE TRIGGER after_detalles_venta_insert
+-- Triggers para Detalles_venta
+DELIMITER //
+CREATE TRIGGER trg_insert_detalles_venta
 AFTER INSERT ON Detalles_venta
 FOR EACH ROW
 BEGIN
-    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
-    VALUES ('Detalles_venta', 'INSERT', current_user());
-END$$
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
+  VALUES ('Detalles_venta', 'INSERT', CURRENT_USER(), NEW.id_DetalleVenta,
+    CONCAT('id_Venta: ', NEW.id_Venta, ', id_Producto: ', NEW.id_Producto, ', Precio_venta: ', NEW.Precio_venta, ', Cantidad_Producto: ', NEW.Cantidad_Producto));
+END //
 DELIMITER ;
 
-
-
-DELIMITER $$
-CREATE TRIGGER after_detalles_venta_update
+DELIMITER //
+CREATE TRIGGER trg_update_detalles_venta
 AFTER UPDATE ON Detalles_venta
 FOR EACH ROW
 BEGIN
-    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
-    VALUES ('Detalles_venta', 'UPDATE', current_user());
-END$$
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
+  VALUES ('Detalles_venta', 'UPDATE', CURRENT_USER(), NEW.id_DetalleVenta,
+    CONCAT('id_Venta: ', OLD.id_Venta, ', id_Producto: ', OLD.id_Producto, ', Precio_venta: ', OLD.Precio_venta, ', Cantidad_Producto: ', OLD.Cantidad_Producto),
+    CONCAT('id_Venta: ', NEW.id_Venta, ', id_Producto: ', NEW.id_Producto, ', Precio_venta: ', NEW.Precio_venta, ', Cantidad_Producto: ', NEW.Cantidad_Producto));
+END //
 DELIMITER ;
 
-
-DELIMITER $$
-CREATE TRIGGER after_detalles_venta_delete
+DELIMITER //
+CREATE TRIGGER trg_delete_detalles_venta
 AFTER DELETE ON Detalles_venta
 FOR EACH ROW
 BEGIN
-    INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario)
-    VALUES ('Detalles_venta', 'DELETE', current_user());
-END$$
-DELIMITER ; 
-
+  INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
+  VALUES ('Detalles_venta', 'DELETE', CURRENT_USER(), OLD.id_DetalleVenta,
+    CONCAT('id_Venta: ', OLD.id_Venta, ', id_Producto: ', OLD.id_Producto, ', Precio_venta: ', OLD.Precio_venta, ', Cantidad_Producto: ', OLD.Cantidad_Producto));
+END //
+DELIMITER ;
