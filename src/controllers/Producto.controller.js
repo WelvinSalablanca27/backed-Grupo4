@@ -51,7 +51,7 @@ export const registrarProductos = async (req, res) => {
 export const eliminarProducto = async (req, res) =>  {
   try {
     const id_Producto = req.params.id_Producto;
-    const [result] = await pool.query('DELETE FROM Producto WHERE id_Producto= ?', [id]);
+    const [result] = await pool.query('DELETE FROM Producto WHERE id_Producto= ?', [id_Producto]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
@@ -72,7 +72,7 @@ export const eliminarProducto = async (req, res) =>  {
 
 export const actualizarProductoPatch = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { id_Producto } = req.params;
     const datos = req.body;
 
     const [result] = await pool.query(
