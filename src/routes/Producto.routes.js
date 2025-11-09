@@ -1,21 +1,20 @@
+// routes/productos.js
 import { Router } from 'express';
-import { obtenerProductos, obtenerProducto, registrarProductos, eliminarProducto, actualizarProductoPatch  } from '../controllers/Producto.controller.js';
+import {
+  obtenerProductos,
+  obtenerProducto,
+  registrarProducto,
+  actualizarProducto,
+  eliminarProducto
+} from '../controllers/Producto.controller.js';
 
 const router = Router();
 
-router.get('/Productos', obtenerProductos);
+// === RUTAS DE PRODUCTOS ===
+router.get('/productos', obtenerProductos);
+router.get('/producto/:id_Producto', obtenerProducto);
+router.post('/registrarProducto', registrarProducto);        // ← singular
+router.patch('/actualizarProducto/:id_Producto', actualizarProducto);
+router.delete('/eliminarProducto/:id_Producto', eliminarProducto); // ← con :id_Producto
 
-router.get ('/Producto/:id_Producto',obtenerProducto); 
-
-// Ruta para registrar una nueva Categoría
-router.post('/registrarProducto', registrarProductos);
-
-router.delete('/eliminarProducto/:id_Producto', eliminarProducto
-
-);
-
-// Ruta para actualizar una compras por su ID
-router.patch('/actualizarProductoPatch/:id_Producto', actualizarProductoPatch);
-
-// Rutas
 export default router;
