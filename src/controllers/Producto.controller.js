@@ -16,7 +16,7 @@ export const obtenerProductos = async (req, res) => {
 export const obtenerProducto = async (req, res) => {
   try {
     const id_Producto = req.params.id_Producto;
-    const [result] = await pool.query('SELECT * FROM Producto WHERE id_Producto = ?', [id_Producto]);
+    const [result] = await pool.query('SELECT * FROM ProductoHERE id_Producto = ?', [id_Producto]);
     if (result.length === 0) {
       return res.status(404).json({
         mensaje: `Producto con ID ${id_Producto} no encontrado.`
