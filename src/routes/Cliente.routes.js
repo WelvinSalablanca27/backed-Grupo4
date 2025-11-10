@@ -10,6 +10,7 @@ import {
 const router = Router();
 
 // Rutas de clientes
+
 router.get('/clientes', obtenerClientes);
 router.get('/clientes/:id_Cliente', obtenerCliente);
 router.post('/registrarCliente', registrarCliente);

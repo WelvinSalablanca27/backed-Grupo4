@@ -3,8 +3,10 @@ import { obtenerProductos, obtenerProducto, registrarProductos, eliminarProducto
 
 const router = Router();
 
-router.get('/Productos', obtenerProductos);
+// Ruta para obtener todos los productos
+router.get('/productos', obtenerProductos);
 
+// Ruta para obtener un producto por su ID
 router.get ('/Producto/:id_Producto',obtenerProducto); 
 
 // Ruta para registrar una nueva Categoría

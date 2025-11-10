@@ -3,7 +3,8 @@ import { Router } from 'express';
 import { obtenerProveedores, obtenerProveedor, registrarProveedor, eliminarProveedor, actualizarProveedorPatch } from '../controllers/Proveedor.controller.js';
 
 const router = Router();
-router.get('/proveedor', obtenerProveedores);
+// Ruta para obtener todos los proveedores
+router.get('/proveedores', obtenerProveedores);
 
 router.get('/proveedor/:id_Proveedor', obtenerProveedor);
 
