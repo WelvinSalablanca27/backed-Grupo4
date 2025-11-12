@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { obtenerDetallesVentas, obtenerDetalleVenta, registrarDetalleVenta, eliminarDetalleventas, actualizarDetalles_venta} from '../controllers/Detalles_venta.controller.js';
+import { obtenerDetallesVentas, obtenerDetalleVenta, registrarDetalleVenta, eliminarDetalleventas, actualizarDetalles_venta} from '../controllers/Detalles_venta.controllers.js';
 
 const router = Router();
 // Rutas

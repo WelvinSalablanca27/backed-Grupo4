@@ -5,7 +5,7 @@ import {
   registrarCompra,
   eliminarCompra,
   actualizarCompra
-} from '../controllers/Compra.controller.js';
+} from '../controllers/Compra.controllers.js';
 
 const router = express.Router();
 
