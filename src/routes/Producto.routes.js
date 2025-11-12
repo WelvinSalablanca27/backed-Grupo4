@@ -13,8 +13,8 @@ const router = Router();
 // === RUTAS DE PRODUCTOS ===
 router.get('/productos', obtenerProductos);
 router.get('/producto/:id_Producto', obtenerProducto);
-router.post('/registrarProducto', registrarProducto);        // ← singular
+router.post('/registrarProducto', registrarProducto);        
 router.patch('/actualizarProducto/:id_Producto', actualizarProducto);
-router.delete('/eliminarProducto/:id_Producto', eliminarProducto); // ← con :id_Producto
+router.delete('/eliminarProducto/:id_Producto', eliminarProducto); // 
 
 export default router;

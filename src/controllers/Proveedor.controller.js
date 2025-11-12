@@ -75,7 +75,7 @@ export const eliminarProveedor = async (req, res) =>  {
 
 
 // Controlador para actualizar parcialmente una Proveedor por su ID
-export const actualizarProveedorPatch = async (req, res) => {
+export const actualizarProveedor = async (req, res) => {
   try {
     const { id_Proveedor } = req.params;
     const datos = req.body;

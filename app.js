@@ -4,7 +4,7 @@ import cors from 'cors';
 //Importar las rutas
 import rutasCliente from './src/routes/Cliente.routes.js';
 import rutasCompra from './src/routes/Compra.routes.js';
-import rutasDetallesCompra from './src/routes/DetalleCompra.routes.js';
+import rutasDetallesCompra from "./src/routes/detalleCompra.js";
 import rutasDetallesVentas from './src/routes/Detalles_venta.routes.js';
 import rutasProducto from './src/routes/Producto.routes.js';
 import rutasVenta from './src/routes/Venta.routes.js';
