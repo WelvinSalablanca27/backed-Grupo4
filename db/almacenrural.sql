@@ -24,8 +24,6 @@ CREATE TABLE Usuarios (
   rol ENUM('admin', 'cajero') DEFAULT 'cajero'
 );
 
--- ===========================================
-
 CREATE TABLE Producto (
   id_Producto INT AUTO_INCREMENT PRIMARY KEY,
   Nombre_Prod VARCHAR(30),
@@ -39,10 +37,15 @@ CREATE TABLE Producto (
 
 
 CREATE TABLE Proveedor (
-  id_Proveedor INT AUTO_INCREMENT PRIMARY KEY,
-  Nombre_Proveedor VARCHAR(50),
-  Telefono VARCHAR(20),
-  Tipo_distribuidor VARCHAR(30)
+    id_Proveedor INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre_Proveedor VARCHAR(50) NOT NULL,
+    Telefono VARCHAR(20),
+    Email VARCHAR(100),
+    Direccion VARCHAR(200),
+    Tipo_Distribuidor VARCHAR(50),
+    Condiciones_Pago VARCHAR(50),
+    Estado ENUM('Activo','Inactivo') DEFAULT 'Activo',
+    Fecha_Registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -119,19 +122,20 @@ VALUES
 ('María', 'Lopez', 'maria.lopez@correo.com', '123456789', '55545678', 'femenino', 'cajero'),
 ('Carlos', 'Ruiz', 'carlos.ruiz@correo.com', '123456789', '55556789', 'masculino', 'admin');
 
--- Proveedores
-INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor)
+
+INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Email, Direccion, Tipo_Distribuidor, Condiciones_Pago)
 VALUES
-('Distribuidora AnimalCare', '58236323', 'Alimentos'),
-('Pet Health S.A.', '84182003', 'Medicamentos'),
-('CleanPet Co.', '57249865', 'Aseo'),
-('Mascotas Feliz Ltda', '38053806', 'Accesorios'),
-('SuperPet Import', '88557677', 'Variado'),
-('Almacen Macota', '87444546', 'Accesorios de Baño'),
-('BioMascotas S.A.', '52725534', 'Medicamentos'),
-('Veterinaria Global', '68017605', 'Medicamentos'),
-('PetCare Solutions', '77136453', 'Alimentos'),
-('Mascota Sana', '62288756', 'Aseo');
+('Distribuidora AnimalCare', '58236323', 'contacto@animalcare.com', 'Calle 1 #12-34', 'Alimentos', 'Contado'),
+('Pet Health S.A.', '84182003', 'ventas@pethealth.com', 'Av. Central 22-15', 'Medicamentos', '30 días'),
+('CleanPet Co.', '57249865', 'info@cleanpet.com', 'Cra 5 #10-20', 'Aseo', 'Contado'),
+('Mascotas Feliz Ltda', '38053806', 'ventas@mascotasfeliz.com', 'Calle 8 #15-10', 'Accesorios', 'Contado'),
+('SuperPet Import', '88557677', 'import@superpet.com', 'Av. Norte 18-30', 'Variado', '30 días'),
+('Almacen Macota', '87444546', 'contacto@almacenmacota.com', 'Cra 10 #7-25', 'Accesorios de Baño', 'Contado'),
+('BioMascotas S.A.', '52725534', 'bio@biomascotas.com', 'Calle 15 #5-12', 'Medicamentos', '30 días'),
+('Veterinaria Global', '68017605', 'global@veterinaria.com', 'Av. Sur #20-18', 'Medicamentos', 'Contado'),
+('PetCare Solutions', '77136453', 'info@petcare.com', 'Cra 25 #12-14', 'Alimentos', '30 días'),
+('Mascota Sana', '62288756', 'ventas@mascotasana.com', 'Calle 18 #9-8', 'Aseo', 'Contado');
+
 
 -- Productos
 INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad, stock)
@@ -197,12 +201,16 @@ BEGIN
 END //
 DELIMITER ;
 
+
+
 DELIMITER //
 CREATE PROCEDURE contar_clientes()
 BEGIN
   SELECT COUNT(*) AS cantidad_clientes FROM Cliente;
 END //
 DELIMITER ;
+
+
 
 DELIMITER //
 CREATE PROCEDURE obtener_cliente_por_id(
@@ -227,6 +235,8 @@ BEGIN
 END //
 DELIMITER ;
 
+
+-- No lo veo necesario ya que ya tienen un procedimiento almacenado que actualiza los usuarios con eso vasta.
 DELIMITER //
 CREATE PROCEDURE actualizar_direccion_cliente(
   IN p_id_cliente INT,
@@ -239,7 +249,8 @@ BEGIN
 END //
 DELIMITER ;
 
-DELIMITER //
+
+
 
 DELIMITER //
 
@@ -309,54 +320,48 @@ DELIMITER ;
 
 DELIMITER //
 CREATE PROCEDURE agregar_proveedores(
-  IN p_Nombre_Proveedor VARCHAR(30),
-  IN p_Telefono VARCHAR(8),
-  IN p_Tipo_distribuidor VARCHAR(30)
+  IN p_Nombre_Proveedor VARCHAR(50),
+  IN p_Telefono VARCHAR(20),
+  IN p_Email VARCHAR(100),
+  IN p_Direccion VARCHAR(200),
+  IN p_Tipo_Distribuidor VARCHAR(50),
+  IN p_Condiciones_Pago VARCHAR(50)
 )
 BEGIN
-  INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Tipo_distribuidor)
-  VALUES (p_Nombre_Proveedor, p_Telefono, p_Tipo_distribuidor);
-END //
-DELIMITER ;
+  INSERT INTO Proveedor (Nombre_Proveedor, Telefono, Email, Direccion, Tipo_Distribuidor, Condiciones_Pago)
+  VALUES (p_Nombre_Proveedor, p_Telefono, p_Email, p_Direccion, p_Tipo_Distribuidor, p_Condiciones_Pago);
+END ;
 
-DELIMITER //
-CREATE PROCEDURE contar_proveedores()
-BEGIN
-  SELECT COUNT(*) AS cantidad_proveedores FROM Proveedor;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE obtener_proveedor_por_id(
-  IN p_id_proveedor INT
-)
-BEGIN
-  SELECT Nombre_Proveedor, Telefono, Tipo_distribuidor
-  FROM Proveedor
-  WHERE id_Proveedor = p_id_proveedor;
-END //
-DELIMITER ;
-
-DELIMITER //
-CREATE PROCEDURE actualizar_telefono_proveedor(
-  IN p_id_proveedor INT,
-  IN p_nuevo_telefono VARCHAR(8)
+-- Actualizar Proveedor
+CREATE PROCEDURE ActualizarProveedor(
+  IN pId INT,
+  IN pNombre VARCHAR(50),
+  IN pTelefono VARCHAR(20),
+  IN pEmail VARCHAR(100),
+  IN pDireccion VARCHAR(200),
+  IN pTipoDistribuidor VARCHAR(50),
+  IN pCondicionesPago VARCHAR(50),
+  IN pEstado ENUM('Activo','Inactivo')
 )
 BEGIN
   UPDATE Proveedor
-  SET Telefono = p_nuevo_telefono
-  WHERE id_Proveedor = p_id_proveedor;
-END //
-DELIMITER ;
+  SET Nombre_Proveedor = pNombre,
+      Telefono = pTelefono,
+      Email = pEmail,
+      Direccion = pDireccion,
+      Tipo_Distribuidor = pTipoDistribuidor,
+      Condiciones_Pago = pCondicionesPago,
+      Estado = pEstado
+  WHERE id_Proveedor = pId;
+END;
 
-DELIMITER //
-CREATE PROCEDURE buscar_proveedores_por_tipo(
-  IN p_tipo_distribuidor VARCHAR(30)
+-- Eliminar Proveedor
+CREATE PROCEDURE EliminarProveedor(
+  IN pId INT
 )
 BEGIN
-  SELECT id_Proveedor, Nombre_Proveedor
-  FROM Proveedor
-  WHERE Tipo_distribuidor LIKE CONCAT('%', p_tipo_distribuidor, '%');
+  DELETE FROM Proveedor
+  WHERE id_Proveedor = pId;
 END //
 DELIMITER ;
 
@@ -663,10 +668,10 @@ DELIMITER ;
 
 -- Roles
 
-CREATE ROLE 'admin19';
-CREATE ROLE 'cajero00';
-CREATE ROLE 'cajero18';
-CREATE ROLE 'lector25';
+CREATE ROLE 'admin190';
+CREATE ROLE 'cajero001';
+CREATE ROLE 'cajero181';
+CREATE ROLE 'lector215';
 
 -- Asignar permisos a roles (corregido y simplificado)
 GRANT ALL PRIVILEGES ON almacenrural.Venta TO 'admin72';
@@ -900,7 +905,6 @@ BEGIN
 END //
 DELIMITER ;
 
--- Triggers para Proveedor
 DELIMITER //
 CREATE TRIGGER trg_insert_proveedor
 AFTER INSERT ON Proveedor
@@ -908,7 +912,7 @@ FOR EACH ROW
 BEGIN
   INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_nuevos)
   VALUES ('Proveedor', 'INSERT', CURRENT_USER(), NEW.id_Proveedor,
-    CONCAT('Nombre_Proveedor: ', NEW.Nombre_Proveedor, ', Telefono: ', NEW.Telefono, ', Tipo_distribuidor: ', NEW.Tipo_distribuidor));
+    CONCAT('Nombre_Proveedor: ', NEW.Nombre_Proveedor, ', Telefono: ', NEW.Telefono, ', Email: ', NEW.Email, ', Direccion: ', NEW.Direccion, ', Tipo_Distribuidor: ', NEW.Tipo_Distribuidor, ', Condiciones_Pago: ', NEW.Condiciones_Pago, ', Estado: ', NEW.Estado));
 END //
 DELIMITER ;
 
@@ -919,8 +923,8 @@ FOR EACH ROW
 BEGIN
   INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores, valores_nuevos)
   VALUES ('Proveedor', 'UPDATE', CURRENT_USER(), NEW.id_Proveedor,
-    CONCAT('Nombre_Proveedor: ', OLD.Nombre_Proveedor, ', Telefono: ', OLD.Telefono, ', Tipo_distribuidor: ', OLD.Tipo_distribuidor),
-    CONCAT('Nombre_Proveedor: ', NEW.Nombre_Proveedor, ', Telefono: ', NEW.Telefono, ', Tipo_distribuidor: ', NEW.Tipo_distribuidor));
+    CONCAT('Nombre_Proveedor: ', OLD.Nombre_Proveedor, ', Telefono: ', OLD.Telefono, ', Email: ', OLD.Email, ', Direccion: ', OLD.Direccion, ', Tipo_Distribuidor: ', OLD.Tipo_Distribuidor, ', Condiciones_Pago: ', OLD.Condiciones_Pago, ', Estado: ', OLD.Estado),
+    CONCAT('Nombre_Proveedor: ', NEW.Nombre_Proveedor, ', Telefono: ', NEW.Telefono, ', Email: ', NEW.Email, ', Direccion: ', NEW.Direccion, ', Tipo_Distribuidor: ', NEW.Tipo_Distribuidor, ', Condiciones_Pago: ', NEW.Condiciones_Pago, ', Estado: ', NEW.Estado));
 END //
 DELIMITER ;
 
@@ -931,12 +935,10 @@ FOR EACH ROW
 BEGIN
   INSERT INTO bitacora_general (tabla_afectada, tipo_cambio, usuario, id_cliente, valores_anteriores)
   VALUES ('Proveedor', 'DELETE', CURRENT_USER(), OLD.id_Proveedor,
-    CONCAT('Nombre_Proveedor: ', OLD.Nombre_Proveedor, ', Telefono: ', OLD.Telefono,
-           ', Tipo_distribuidor: ', OLD.Tipo_distribuidor));
+    CONCAT('Nombre_Proveedor: ', OLD.Nombre_Proveedor, ', Telefono: ', OLD.Telefono, ', Email: ', OLD.Email, ', Direccion: ', OLD.Direccion, ', Tipo_Distribuidor: ', OLD.Tipo_Distribuidor, ', Condiciones_Pago: ', OLD.Condiciones_Pago, ', Estado: ', OLD.Estado));
 END //
 DELIMITER ;
 
--- Triggers para Compra
 DELIMITER //
 CREATE TRIGGER trg_insert_compra
 AFTER INSERT ON Compra
