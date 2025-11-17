@@ -29,7 +29,6 @@ CREATE TABLE Producto (
   Nombre_Prod VARCHAR(30),
   Tipo_Prod VARCHAR(20),
   Existencia_Prod DECIMAL(6,2),
-  stock INT ,
   Precio_Costo DECIMAL(10,2),
   Precio_Venta DECIMAL(10,2),
   Fe_caducidad DATE
@@ -138,18 +137,18 @@ VALUES
 
 
 -- Productos
-INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad, stock)
+INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad)
 VALUES
-('Dog Chow Adulto 15kg', 'Alimento', 25, 90000, 120000, '2025-12-31', 25),
-('Cat Chow Gato 8kg', 'Alimento', 18, 60000, 85000, '2025-11-30', 18),
-('Antipulgas Frontline', 'Medicamento', 30, 25000, 40000, '2026-06-30', 30),
-('Shampoo Canino 500ml', 'Aseo', 50, 12000, 20000, '2026-01-15', 50),
-('Juguete Hueso de Goma', 'Accesorio', 40, 8000, 15000, '2026-01-15', 40),
-('Arena para Gato 10kg', 'Aseo', 35, 18000, 30000,'2026-07-15', 35),
-('Vitaminas para Perro', 'Medicamento', 20, 15000, 25000, '2025-05-01', 20),
-('Comedero Doble Acero', 'Accesorio', 45, 16000, 28000, '2026-01-15', 45),
-('Collar Antipulgas', 'Accesorio', 60, 12000, 22000, '2026-03-15', 60),
-('Pelota con sonido', 'Accesorio', 70, 6000, 10000, '2028-01-15', 70);
+('Dog Chow Adulto 15kg', 'Alimento', 25, 90000, 120000, '2025-12-31'),
+('Cat Chow Gato 8kg', 'Alimento', 18, 60000, 85000, '2025-11-30'),
+('Antipulgas Frontline', 'Medicamento', 30, 25000, 40000, '2026-06-30'),
+('Shampoo Canino 500ml', 'Aseo', 50, 12000, 20000, '2026-01-15'),
+('Juguete Hueso de Goma', 'Accesorio', 40, 8000, 15000, '2026-01-15'),
+('Arena para Gato 10kg', 'Aseo', 35, 18000, 30000,'2026-07-15'),
+('Vitaminas para Perro', 'Medicamento', 20, 15000, 25000, '2025-05-01'),
+('Comedero Doble Acero', 'Accesorio', 45, 16000, 28000, '2026-01-15'),
+('Collar Antipulgas', 'Accesorio', 60, 12000, 22000, '2026-03-15'),
+('Pelota con sonido', 'Accesorio', 70, 6000, 10000, '2028-01-15');
 
 
 -- Compras
@@ -202,15 +201,12 @@ END //
 DELIMITER ;
 
 
-
 DELIMITER //
 CREATE PROCEDURE contar_clientes()
 BEGIN
   SELECT COUNT(*) AS cantidad_clientes FROM Cliente;
 END //
 DELIMITER ;
-
-
 
 DELIMITER //
 CREATE PROCEDURE obtener_cliente_por_id(
