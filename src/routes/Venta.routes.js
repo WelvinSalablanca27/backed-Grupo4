@@ -1,13 +1,13 @@
 import { Router } from 'express';
-import { obtenerVentas, obtenerVenta, registrarVenta, eliminarventas, actualizarVenta } from '../controllers/Venta.controllers.js';
+import { ObtenerVentas, obtenerVenta, registrarVenta, eliminarventas, actualizarVenta } from '../controllers/Venta.controllers.js';
 
 const router = Router();
 // Rutas
 
-router.get('/venta', obtenerVentas);
+router.get('/ventas', ObtenerVentas);
 
 // Rutas
-router.get('/ventas/:id_Venta', obtenerVenta);
+router.get('/ventas/:id_Ventas', obtenerVenta);
 
 // Rutas
 router.post('/registrarVenta', registrarVenta);
