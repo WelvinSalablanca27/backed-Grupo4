@@ -1,6 +1,5 @@
 import { pool } from '../../db_connection.js';
 
-
 export const obtenerProductos = async (req, res) => {
   try {
     const [result] = await pool.query('SELECT * FROM Producto');
@@ -12,7 +11,6 @@ export const obtenerProductos = async (req, res) => {
     });
   }
 };
-
 
 export const obtenerProducto = async (req, res) => {
   try {
@@ -40,15 +38,14 @@ export const registrarProducto = async (req, res) => {
       Nombre_Prod,
       Tipo_Prod,
       Existencia_Prod,
-      stock,
       Precio_Costo,
       Precio_Venta,
       Fe_caducidad
     } = req.body;
 
     const [result] = await pool.query(
-      'INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, stock, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [Nombre_Prod, Tipo_Prod, Existencia_Prod, stock, Precio_Costo, Precio_Venta, Fe_caducidad]
+      'INSERT INTO Producto (Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad) VALUES (?, ?, ?, ?, ?, ?)',
+      [Nombre_Prod, Tipo_Prod, Existencia_Prod, Precio_Costo, Precio_Venta, Fe_caducidad]
     );
 
     res.status(201).json({
@@ -86,7 +83,6 @@ export const eliminarProducto = async (req, res) => {
   }
 };
 
-
 export const actualizarProducto = async (req, res) => {
   try {
     const id_Producto = req.params.id_Producto;
@@ -94,7 +90,6 @@ export const actualizarProducto = async (req, res) => {
       Nombre_Prod,
       Tipo_Prod,
       Existencia_Prod,
-      stock,
       Precio_Costo,
       Precio_Venta,
       Fe_caducidad
@@ -105,7 +100,6 @@ export const actualizarProducto = async (req, res) => {
     if (Nombre_Prod) campos.Nombre_Prod = Nombre_Prod;
     if (Tipo_Prod) campos.Tipo_Prod = Tipo_Prod;
     if (Existencia_Prod !== undefined) campos.Existencia_Prod = Number(Existencia_Prod);
-    if (stock !== undefined) campos.stock = Number(stock);
     if (Precio_Costo !== undefined) campos.Precio_Costo = Number(Precio_Costo);
     if (Precio_Venta !== undefined) campos.Precio_Venta = Number(Precio_Venta);
 
