@@ -8,7 +8,7 @@ router.get('/Usuarios', obtenerUsuarios);
 router.get ('/Usuario/:id',obtenerUsuario); 
 
 // Ruta para registrar una nueva Categoría
-router.post('/registrarUsuario', registrarUsuario);
+router.post('/registrarusuario', registrarUsuario);
 
 router.delete('/eliminarUsuario/:id', eliminarUsuario);
 
